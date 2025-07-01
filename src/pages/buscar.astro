@@ -1,0 +1,12 @@
+---
+// src/pages/buscar.astro
+import Layout from '../layouts/Layout.astro';
+import SearchForm from '../components/SearchForm.jsx';
+---
+
+<Layout title="Buscar Recetas">
+  <h1 class="text-3xl font-bold mb-4">Encuentra tu próxima comida</h1>
+  
+  <!-- Este componente se cargará y será interactivo en el navegador -->
+  <SearchForm client:load />
+</Layout>
