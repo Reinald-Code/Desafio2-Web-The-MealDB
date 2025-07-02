@@ -12,7 +12,7 @@ const meals = data.meals;
 <Layout title="Recetas de Marisco">
   <h1 class="text-3xl font-bold mb-4">Recetas de Marisco</h1>
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    {meals.map(meal => (
+    {meals.map((meal): any => (
       <TarjetaRecetas
         id={meal.idMeal}
         title={meal.strMeal}
