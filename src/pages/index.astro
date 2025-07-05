@@ -3,21 +3,42 @@
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-		<nav>
-			<ul style="list-style:none; display:flex; gap:1rem; padding:0;">
-				<li><a href="/recetas">Recetas</a></li>
-				<li><a href="/equipo">Equipo</a></li>
-				<li><a href="/buscar">Buscar</a></li>
-			</ul>
-		</nav>
-	</body>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>Astro</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 20px;
+                text-align: center;
+            }
+            img {
+                max-width: 80%; /* Ajusta el ancho máximo de la imagen */
+                height: auto;   /* Mantiene la proporción */
+                margin-top: 20px; /* Espacio superior */
+                border-radius: 8px; /* Bordes redondeados */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            }
+            nav ul {
+                justify-content: center; /* Centra los elementos de la navegación */
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Astro</h1>
+        <nav>
+            <ul style="list-style:none; display:flex; gap:1rem; padding:0;">
+                <li><a href="/recetas">Recetas</a></li>
+                <li><a href="/equipo">Equipo</a></li>
+                <li><a href="/buscar">Buscar</a></li>
+            </ul>
+        </nav>
+
+        <img src="https://w.wallhaven.cc/full/j5/wallhaven-j5vye5.jpg" alt="Una hermosa imagen de paisaje generada aleatoriamente">
+
+        <p>Esta es una imagen de ejemplo añadida a tu página de Astro.</p>
+    </body>
 </html>
