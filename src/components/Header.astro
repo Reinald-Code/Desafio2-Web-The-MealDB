@@ -1,0 +1,45 @@
+---
+import SearchBar from './SearchBar.jsx';
+
+// Definimos cómo es un objeto Category
+interface Category {
+  strCategory: string;
+}
+
+const response = await fetch(
+  'https://www.themealdb.com/api/json/v1/1/categories.php'
+);
+const data = await response.json();
+// Le decimos a TypeScript que 'categories' es un array de objetos 'Category'
+const categories: Category[] = data.categories;
+---
+<!-- El resto del código HTML no cambia... -->
+<header class="bg-white shadow-md sticky top-0 z-10">
+  <nav class="container mx-auto flex justify-between items-center p-4">
+    <div class="flex items-center gap-8">
+      <a href="/" class="text-xl font-bold hover:text-orange-500">
+        RecetasDelMundo
+      </a>
+      <div class="relative group py-4"> <!-- Modificación para el problema 3 -->
+        <button class="font-semibold hover:text-orange-500">Categorías</button>
+        <div
+          class="absolute hidden group-hover:block bg-white shadow-lg rounded-md mt-0 py-2 w-48"
+        >
+          {
+            categories.map((cat) => ( // Ahora TypeScript sabe que 'cat' es de tipo 'Category'
+              <a
+                href={`/category/${cat.strCategory}`}
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-100"
+              >
+                {cat.strCategory}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+    <div>
+      <SearchBar client:load />
+    </div>
+  </nav>
+</header>

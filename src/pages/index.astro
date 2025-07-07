@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MealCard from '../components/MealCard.jsx';
+
+// Hacemos la llamada a la API para obtener las recetas que empiezan con "a"
+// El código dentro de '---' se ejecuta en el servidor, antes de enviar la página al navegador.
+const response = await fetch(
+  'https://www.themealdb.com/api/json/v1/1/search.php?f=a'
+);
+const data = await response.json();
+// Ordenamos las recetas alfabéticamente por nombre
+const meals = data.meals.sort((a, b) => a.strMeal.localeCompare(b.strMeal));
+---
+
+<Layout title="Inicio - Recetas del Mundo">
+  <h1 class="text-3xl font-bold mb-6 text-center">Todas las Recetas (A)</h1>
+
+  <!-- Creamos una grilla para mostrar las tarjetas -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {
+      meals.map((meal) => (
+        <MealCard client:load meal={meal} />
+      ))
+    }
+  </div>
+</Layout>
