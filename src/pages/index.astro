@@ -1,24 +1,37 @@
 ---
+// Definimos la interfaz para el tipo Meal
+interface Meal {
+  idMeal: string;
+  strMeal: string;
+  strMealThumb: string;
+  // Añade más propiedades según necesites
+}
+
 import Layout from '../layouts/Layout.astro';
 import MealCard from '../components/MealCard.jsx';
 
-// Hacemos la llamada a la API para obtener las recetas que empiezan con "a"
-// El código dentro de '---' se ejecuta en el servidor, antes de enviar la página al navegador.
-const response = await fetch(
-  'https://www.themealdb.com/api/json/v1/1/search.php?f=a'
-);
-const data = await response.json();
-// Ordenamos las recetas alfabéticamente por nombre
-const meals = data.meals.sort((a, b) => a.strMeal.localeCompare(b.strMeal));
+// Función para obtener una receta aleatoria
+async function getRandomMeal(): Promise<Meal> {
+  const response = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+  const data = await response.json();
+  return data.meals[0];
+}
+
+// Obtenemos múltiples recetas aleatorias
+const mealPromises = Array(12).fill(null).map(() => getRandomMeal());
+const meals: Meal[] = await Promise.all(mealPromises);
+
+// Eliminamos posibles duplicados basándonos en el ID
+const uniqueMeals = Array.from(new Map(meals.map(meal => [meal.idMeal, meal])).values());
 ---
 
 <Layout title="Inicio - Recetas del Mundo">
-  <h1 class="text-3xl font-bold mb-6 text-center">Todas las Recetas (A)</h1>
+  <h1 class="text-3xl font-bold mb-6 text-center">Recetas Aleatorias</h1>
 
   <!-- Creamos una grilla para mostrar las tarjetas -->
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
     {
-      meals.map((meal) => (
+      uniqueMeals.map((meal: Meal) => (
         <MealCard client:load meal={meal} />
       ))
     }
