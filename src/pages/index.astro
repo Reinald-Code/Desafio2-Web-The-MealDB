@@ -1,38 +1,120 @@
 ---
-// Definimos la interfaz para el tipo Meal
+// Definimos las interfaces TypeScript para manejar los datos de las recetas
+
+// Interfaz básica que define la estructura de una receta de la API
 interface Meal {
-  idMeal: string;
-  strMeal: string;
-  strMealThumb: string;
-  // Añade más propiedades según necesites
+  idMeal: string;           // Identificador único de la receta
+  strMeal: string;          // Nombre de la receta en inglés
+  strMealThumb: string;     // URL de la imagen en miniatura
+  strInstructions?: string; // Instrucciones de preparación (opcional)
+  // Puedes añadir más propiedades de la API según necesites
 }
 
-import Layout from '../layouts/Layout.astro';
-import MealCard from '../components/MealCard.jsx';
+// Interfaz extendida que incluye las versiones traducidas
+interface TranslatedMeal extends Meal {
+  translatedName?: string;        // Nombre traducido al español
+  translatedInstructions?: string; // Instrucciones traducidas al español
+}
 
-// Función para obtener una receta aleatoria
-async function getRandomMeal(): Promise<Meal> {
+// Importamos los componentes necesarios para construir la página
+import Layout from '../layouts/Layout.astro';  // Layout principal con estructura común
+import MealCard from '../components/MealCard.jsx'; // Componente React para mostrar cada receta
+
+// Función asíncrona para traducir cualquier texto del inglés al español
+// Utiliza el servicio gratuito LibreTranslate
+async function translateText(text: string): Promise<string> {
+  try {
+    // Hacemos una petición POST al servicio de traducción
+    const response = await fetch("https://libretranslate.de/translate", {
+      method: "POST",
+      body: JSON.stringify({
+        q: text,           // Texto a traducir
+        source: "en",      // Idioma origen: inglés
+        target: "es",      // Idioma destino: español
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+    
+    // Extraemos el texto traducido de la respuesta
+    const data = await response.json();
+    return data.translatedText;
+  } catch (error) {
+    // Si hay algún problema con la traducción, mostramos el error
+    console.error('Error al traducir:', error);
+    
+    // Como fallback, devolvemos el texto original sin traducir
+    return text;
+  }
+}
+
+// Función que obtiene una receta aleatoria de la API y la traduce automáticamente
+async function getRandomMeal(): Promise<TranslatedMeal> {
+  // Obtenemos una receta completamente aleatoria de la API
   const response = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
   const data = await response.json();
-  return data.meals[0];
+  const meal = data.meals[0]; // La API siempre devuelve un array, tomamos el primer elemento
+  
+  try {
+    // Traducimos tanto el nombre como las instrucciones en paralelo
+    // Promise.all ejecuta ambas traducciones simultáneamente para mayor eficiencia
+    const [translatedName, translatedInstructions] = await Promise.all([
+      translateText(meal.strMeal),                    // Traducir nombre de la receta
+      translateText(meal.strInstructions || '')       // Traducir instrucciones (o string vacío si no existen)
+    ]);
+
+    // Retornamos la receta original con las traducciones agregadas
+    return {
+      ...meal,                      // Copiamos todas las propiedades originales
+      translatedName,               // Agregamos el nombre traducido
+      translatedInstructions        // Agregamos las instrucciones traducidas
+    };
+  } catch (error) {
+    // Si hay algún error en el proceso de traducción, lo registramos
+    console.error('Error en la traducción:', error);
+    
+    // Devolvemos la receta original sin traducciones como fallback
+    return meal;
+  }
 }
 
-// Obtenemos múltiples recetas aleatorias
+// Creamos un array de 12 promesas para obtener recetas aleatorias
+// Array(12).fill(null) crea un array con 12 elementos null
+// .map(() => getRandomMeal()) reemplaza cada null con una llamada a la función
 const mealPromises = Array(12).fill(null).map(() => getRandomMeal());
-const meals: Meal[] = await Promise.all(mealPromises);
 
-// Eliminamos posibles duplicados basándonos en el ID
+// Ejecutamos todas las 12 peticiones de recetas aleatorias en paralelo
+// Promise.all espera a que todas las promesas se resuelvan antes de continuar
+const meals: TranslatedMeal[] = await Promise.all(mealPromises);
+
+// Eliminamos posibles recetas duplicadas que podrían aparecer por casualidad
+// Usamos un Map con el ID como clave para filtrar duplicados, luego convertimos a array
 const uniqueMeals = Array.from(new Map(meals.map(meal => [meal.idMeal, meal])).values());
 ---
 
+<!-- Inicio del HTML de la página -->
+<!-- Usamos el Layout principal y definimos el título para la pestaña del navegador -->
 <Layout title="Inicio - Recetas del Mundo">
+  <!-- Título principal de la página de inicio -->
   <h1 class="text-3xl font-bold mb-6 text-center">Recetas Aleatorias</h1>
 
-  <!-- Creamos una grilla para mostrar las tarjetas -->
+  <!-- Grid responsive que contiene todas las tarjetas de recetas -->
+  <!-- La grilla se adapta: 1 columna en móvil, 2 en tablet pequeño, 3 en tablet, 4 en desktop -->
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {/* Iteramos sobre cada receta única para crear las tarjetas */}
     {
-      uniqueMeals.map((meal: Meal) => (
-        <MealCard client:load meal={meal} />
+      uniqueMeals.map((meal: TranslatedMeal) => (
+        // Componente MealCard que renderiza cada receta como una tarjeta atractiva
+        // client:load indica que este componente React se hidrata en el cliente
+        <MealCard 
+          client:load 
+          meal={{
+            ...meal,  // Copiamos todas las propiedades de la receta
+            // Usamos el nombre traducido si existe, sino el original en inglés
+            strMeal: meal.translatedName || meal.strMeal,
+            // Usamos las instrucciones traducidas si existen, sino las originales
+            strInstructions: meal.translatedInstructions || meal.strInstructions
+          }} 
+        />
       ))
     }
   </div>

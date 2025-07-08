@@ -1,0 +1,237 @@
+---
+// Importamos el layout principal y el componente para mostrar tarjetas de recetas
+import Layout from '../../layouts/Layout.astro';
+import MealCard from '../../components/MealCard.jsx';
+
+// Definimos la interfaz TypeScript para el tipo básico de receta (Meal)
+// Esto nos ayuda a tener autocompletado y verificación de tipos
+interface Meal {
+  idMeal: string;           // ID único de la receta en la base de datos
+  strMeal: string;          // Nombre de la receta en inglés
+  strMealThumb: string;     // URL de la imagen de la receta
+  strInstructions?: string; // Instrucciones de preparación (opcional)
+}
+
+// Definimos una interfaz que extiende Meal para incluir las traducciones
+// El signo ? indica que estas propiedades son opcionales
+interface TranslatedMeal extends Meal {
+  translatedName?: string;        // Nombre traducido al español
+  translatedInstructions?: string; // Instrucciones traducidas al español
+}
+
+// Función especial de Astro que genera todas las rutas estáticas en tiempo de build
+// Esto es necesario para que Astro sepa qué páginas generar antes del despliegue
+export async function getStaticPaths() {
+  // Obtenemos la lista completa de países de la API
+  const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list');
+  const data = await response.json();
+  
+  // Retornamos un array con todas las rutas posibles
+  // Cada ruta tiene un parámetro 'country' en minúsculas
+  return data.meals.map((area: { strArea: string }) => ({
+    params: { country: area.strArea.toLowerCase() }  // mexican, italian, chinese, etc.
+  }));
+}
+
+// Obtenemos el parámetro 'country' de la URL dinámica [country].astro
+// Por ejemplo, si la URL es /country/mexican, country será "mexican"
+const { country } = Astro.params;
+
+// Verificación de seguridad: nos aseguramos de que el parámetro country existe y es un string
+// Si no cumple estos requisitos, redirigimos al usuario a la página de países
+if (!country || typeof country !== 'string') {
+  return Astro.redirect('/countries');
+}
+
+// Función asíncrona para traducir texto del inglés al español
+// Utiliza el servicio gratuito LibreTranslate para realizar las traducciones
+async function translateText(text: string): Promise<string> {
+  try {
+    // Realizamos una petición POST al servicio de traducción
+    const response = await fetch("https://libretranslate.de/translate", {
+      method: "POST",
+      body: JSON.stringify({
+        q: text,           // El texto que queremos traducir
+        source: "en",      // Idioma de origen (inglés)
+        target: "es",      // Idioma de destino (español)
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+    
+    // Convertimos la respuesta a JSON
+    const data = await response.json();
+    
+    // Retornamos el texto traducido
+    return data.translatedText;
+  } catch (error) {
+    // Si hay algún error en la traducción, lo registramos en la consola
+    console.error('Error al traducir:', error);
+    
+    // Como fallback, devolvemos el texto original en inglés
+    return text;
+  }
+}
+
+// Función que traduce una receta completa (nombre e instrucciones)
+async function translateMeal(meal: Meal): Promise<TranslatedMeal> {
+  try {
+    // Traducimos solo el nombre de la receta para optimizar el rendimiento
+    const translatedName = await translateText(meal.strMeal);
+    
+    // Retornamos la receta original con el nombre traducido agregado
+    return {
+      ...meal,              // Copiamos todas las propiedades originales
+}
+
+// Objeto que mapea los nombres de países en inglés (en minúsculas) a español
+// Necesario porque la URL viene en minúsculas pero queremos mostrar nombres bonitos en español
+const countryTranslations: { [key: string]: string } = {
+  'american': 'Estadounidense',    // Estados Unidos
+  'british': 'Británica',          // Reino Unido
+  'canadian': 'Canadiense',        // Canadá
+  'chinese': 'China',              // China
+  'croatian': 'Croacia',           // Croacia
+  'dutch': 'Holanda',              // Países Bajos
+  'egyptian': 'Egipto',            // Egipto
+  'filipino': 'Filipinas',         // Filipinas
+  'french': 'Francia',             // Francia
+  'greek': 'Grecia',               // Grecia
+  'indian': 'India',               // India
+  'irish': 'Irlanda',              // Irlanda
+  'italian': 'Italia',             // Italia
+  'jamaican': 'Jamaica',           // Jamaica
+  'japanese': 'Japón',             // Japón
+  'kenyan': 'Kenia',               // Kenia
+  'malaysian': 'Malasia',          // Malasia
+  'mexican': 'México',             // México
+  'moroccan': 'Marruecos',         // Marruecos
+  'polish': 'Polonia',             // Polonia
+  'portuguese': 'Portugal',        // Portugal
+  'russian': 'Rusia',              // Rusia
+  'spanish': 'España',             // España
+  'thai': 'Tailandia',             // Tailandia
+  'tunisian': 'Túnez',             // Túnez
+  'turkish': 'Turquía',            // Turquía
+  'ukrainian': 'Ucrania',          // Ucrania
+  'uruguayan': 'Uruguay',          // Uruguay
+  'vietnamese': 'Vietnam'          // Vietnam
+};
+
+// Realizamos la llamada a la API de TheMealDB para obtener todas las recetas del país específico
+// La API espera el nombre del país en inglés (como viene en la URL)
+const response = await fetch(
+  `https://www.themealdb.com/api/json/v1/1/filter.php?a=${country}`
+);
+
+// Convertimos la respuesta a JSON para poder trabajar con los datos
+const data = await response.json();
+
+// Variable para controlar si hay recetas disponibles
+const hasRecipes = data.meals && data.meals.length > 0;
+
+// Solo procesamos las recetas si existen
+let meals: TranslatedMeal[] = [];
+let countryNameSpanish = '';
+
+if (hasRecipes) {
+  // Creamos un array de promesas para traducir todas las recetas en paralelo
+  // Esto es más eficiente que traducir una por una secuencialmente
+  const translationPromises = data.meals.map((meal: Meal) => translateMeal(meal));
+
+  // Esperamos a que todas las traducciones se completen usando Promise.all
+  // Esto significa que todas las traducciones ocurren al mismo tiempo
+  const translatedMeals: TranslatedMeal[] = await Promise.all(translationPromises);
+
+  // Ordenamos las recetas alfabéticamente por nombre traducido
+  // Si no hay traducción disponible, usamos el nombre original en inglés
+  meals = translatedMeals.sort((a: TranslatedMeal, b: TranslatedMeal) => {
+    const nameA = a.translatedName || a.strMeal;  // Usa traducción o nombre original
+    const nameB = b.translatedName || b.strMeal;  // Usa traducción o nombre original
+    return nameA.localeCompare(nameB);            // Comparación alfabética con soporte para acentos
+  });
+}
+
+// Obtenemos el nombre del país en español para mostrar en los títulos
+// Si no hay traducción, usa el nombre original
+countryNameSpanish = countryTranslations[(country as string).toLowerCase()] || (country as string);
+---
+
+<!-- Redirección del lado del cliente si no hay recetas -->
+{!hasRecipes && (
+  <script>
+    window.location.href = '/countries';
+  </script>
+)}
+
+<!-- Comenzamos el HTML de la página utilizando el Layout principal -->
+<!-- El título dinámico aparecerá en la pestaña del navegador -->
+<Layout title={`Recetas de ${countryNameSpanish} - Recetas del Mundo`}>
+  <!-- Contenedor principal con estilos responsive -->
+  <div class="container mx-auto px-4 py-8">
+    
+    <!-- Sección de encabezado con información del país -->
+    <div class="text-center mb-8">
+      <!-- Título principal con el nombre del país -->
+      <h1 class="text-4xl font-bold mb-4 text-gray-800">
+        Cocina {countryNameSpanish}
+      </h1>
+      <!-- Descripción que invita a explorar las recetas -->
+      <p class="text-lg text-gray-600">
+        Descubre las deliciosas recetas tradicionales de {countryNameSpanish}
+      </p>
+      <!-- Contador dinámico de recetas encontradas -->
+      <!-- Maneja correctamente el singular/plural -->
+      <p class="text-sm text-gray-500 mt-2">
+        {meals.length} receta{meals.length !== 1 ? 's' : ''} encontrada{meals.length !== 1 ? 's' : ''}
+      </p>
+    </div>
+
+    <!-- Botón de navegación para volver a la lista de países -->
+    <div class="mb-6">
+      <a 
+        href="/countries" 
+        class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+      >
+        ← Volver a países
+      </a>
+    </div>
+
+    <!-- Grid responsive que contiene todas las tarjetas de recetas -->
+    <!-- Se adapta automáticamente según el tamaño de pantalla -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {/* Iteramos sobre cada receta traducida */}
+      {
+        meals.map((meal: TranslatedMeal) => (
+          // Utilizamos el componente MealCard para mostrar cada receta
+          // client:load hace que el componente React se hidrate en el cliente
+          <MealCard 
+            client:load 
+            meal={{
+              ...meal,  // Copiamos todas las propiedades de la receta
+              // Sobrescribimos strMeal con la versión traducida si existe
+              strMeal: meal.translatedName || meal.strMeal
+            }} 
+          />
+        ))
+      }
+    </div>
+
+    {/* Manejo del caso especial cuando no hay recetas */}
+    {/* Este bloque solo se muestra si el array de meals está vacío */}
+    {meals.length === 0 && (
+      <div class="text-center py-12">
+        <!-- Mensaje informativo cuando no hay recetas -->
+        <p class="text-gray-500 text-lg">
+          No se encontraron recetas para este país.
+        </p>
+        <!-- Botón para volver a la lista de países -->
+        <a 
+          href="/countries" 
+          class="mt-4 inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Ver todos los países
+        </a>
+      </div>
+    )}
+  </div>
+</Layout>

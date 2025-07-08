@@ -1,0 +1,128 @@
+---
+// Importamos el layout principal que define la estructura de todas las páginas
+import Layout from '../layouts/Layout.astro';
+
+// Realizamos una llamada a la API de TheMealDB para obtener todas las áreas/países disponibles
+// Esta API devuelve una lista de todos los países que tienen recetas en la base de datos
+const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list');
+
+// Convertimos la respuesta en formato JSON para poder trabajar con los datos
+const data = await response.json();
+
+// Extraemos el array de países/áreas de la respuesta de la API
+// Cada elemento del array tiene la propiedad 'strArea' con el nombre del país en inglés
+const areas = data.meals;
+
+// Creamos un objeto que mapea los nombres de países en inglés a sus equivalentes en español
+// Esto nos permite mostrar los nombres de los países en nuestro idioma
+const countryTranslations: { [key: string]: string } = {
+  'American': 'Estadounidense',    // Cocina estadounidense
+  'British': 'Británica',          // Cocina del Reino Unido
+  'Canadian': 'Canadiense',        // Cocina de Canadá
+  'Chinese': 'China',              // Cocina china
+  'Croatian': 'Croacia',           // Cocina croata
+  'Dutch': 'Holanda',              // Cocina holandesa
+  'Egyptian': 'Egipto',            // Cocina egipcia
+  'Filipino': 'Filipinas',         // Cocina filipina
+  'French': 'Francia',             // Cocina francesa
+  'Greek': 'Grecia',               // Cocina griega
+  'Indian': 'India',               // Cocina india
+  'Irish': 'Irlanda',              // Cocina irlandesa
+  'Italian': 'Italia',             // Cocina italiana
+  'Jamaican': 'Jamaica',           // Cocina jamaicana
+  'Japanese': 'Japón',             // Cocina japonesa
+  'Kenyan': 'Kenia',               // Cocina keniana
+  'Malaysian': 'Malasia',          // Cocina malasia
+  'Mexican': 'México',             // Cocina mexicana
+  'Moroccan': 'Marruecos',         // Cocina marroquí
+  'Polish': 'Polonia',             // Cocina polaca
+  'Portuguese': 'Portugal',        // Cocina portuguesa
+  'Russian': 'Rusia',              // Cocina rusa
+  'Spanish': 'España',             // Cocina española
+  'Thai': 'Tailandia',             // Cocina tailandesa
+  'Tunisian': 'Túnez',             // Cocina tunecina
+  'Turkish': 'Turquía',            // Cocina turca
+  'Ukrainian': 'Ucrania',          // Cocina ucraniana
+  'Uruguayan': 'Uruguay',          // Cocina uruguaya
+  'Vietnamese': 'Vietnam'          // Cocina vietnamita
+};
+---
+
+<!-- Utilizamos el componente Layout para envolver toda la página -->
+<!-- El título aparecerá en la pestaña del navegador y en los metadatos -->
+<Layout title="Cocinas del Mundo - Recetas por País">
+  <!-- Contenedor principal con márgenes automáticos, padding y estilos responsive -->
+  <div class="container mx-auto px-4 py-8">
+    <!-- Título principal de la página -->
+    <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">
+      Cocinas del Mundo
+    </h1>
+    <!-- Subtítulo descriptivo que explica el propósito de la página -->
+    <p class="text-lg text-gray-600 text-center mb-12">
+      Explora las deliciosas recetas tradicionales de diferentes países
+    </p>
+
+    <!-- Grid responsive que se adapta a diferentes tamaños de pantalla -->
+    <!-- 1 columna en móvil, 2 en tablet pequeño, 3 en tablet, 4 en desktop, 5 en pantallas grandes -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      {/* Iteramos sobre cada país/área obtenido de la API */}
+      {areas.map((area: { strArea: string }) => (
+        <!-- Cada país es un enlace clickeable que lleva a sus recetas específicas -->
+        <!-- La URL se forma convirtiendo el nombre del país a minúsculas -->
+        <a 
+          href={`/country/${area.strArea.toLowerCase()}`}
+          class="group bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200"
+        >
+          <!-- Contenedor del contenido de cada tarjeta de país -->
+          <div class="p-6 text-center">
+            <!-- Sección de banderas usando emojis -->
+            <!-- Cada país tiene su bandera correspondiente -->
+            <div class="text-4xl mb-3">
+              {/* Banderas específicas para cada país */}
+              {area.strArea === 'American' && '🇺🇸'}      {/* Estados Unidos */}
+              {area.strArea === 'British' && '🇬🇧'}       {/* Reino Unido */}
+              {area.strArea === 'Canadian' && '🇨🇦'}      {/* Canadá */}
+              {area.strArea === 'Chinese' && '🇨🇳'}       {/* China */}
+              {area.strArea === 'Croatian' && '🇭🇷'}      {/* Croacia */}
+              {area.strArea === 'Dutch' && '🇳🇱'}         {/* Holanda */}
+              {area.strArea === 'Egyptian' && '🇪🇬'}      {/* Egipto */}
+              {area.strArea === 'Filipino' && '🇵🇭'}      {/* Filipinas */}
+              {area.strArea === 'French' && '🇫🇷'}        {/* Francia */}
+              {area.strArea === 'Greek' && '🇬🇷'}         {/* Grecia */}
+              {area.strArea === 'Indian' && '🇮🇳'}        {/* India */}
+              {area.strArea === 'Irish' && '🇮🇪'}         {/* Irlanda */}
+              {area.strArea === 'Italian' && '🇮🇹'}       {/* Italia */}
+              {area.strArea === 'Jamaican' && '🇯🇲'}      {/* Jamaica */}
+              {area.strArea === 'Japanese' && '🇯🇵'}      {/* Japón */}
+              {area.strArea === 'Kenyan' && '🇰🇪'}        {/* Kenia */}
+              {area.strArea === 'Malaysian' && '🇲🇾'}     {/* Malasia */}
+              {area.strArea === 'Mexican' && '🇲🇽'}       {/* México */}
+              {area.strArea === 'Moroccan' && '🇲🇦'}      {/* Marruecos */}
+              {area.strArea === 'Polish' && '🇵🇱'}        {/* Polonia */}
+              {area.strArea === 'Portuguese' && '🇵🇹'}    {/* Portugal */}
+              {area.strArea === 'Russian' && '🇷🇺'}       {/* Rusia */}
+              {area.strArea === 'Spanish' && '🇪🇸'}       {/* España */}
+              {area.strArea === 'Thai' && '🇹🇭'}          {/* Tailandia */}
+              {area.strArea === 'Tunisian' && '🇹🇳'}      {/* Túnez */}
+              {area.strArea === 'Turkish' && '🇹🇷'}       {/* Turquía */}
+              {area.strArea === 'Ukrainian' && '🇺🇦'}     {/* Ucrania */}
+              {area.strArea === 'Uruguayan' && '🇺🇾'}     {/* Uruguay */}
+              {area.strArea === 'Vietnamese' && '🇻🇳'}    {/* Vietnam */}
+              {/* Si el país no tiene bandera específica, mostramos un emoji genérico de comida */}
+              {!['American', 'British', 'Canadian', 'Chinese', 'Croatian', 'Dutch', 'Egyptian', 'Filipino', 'French', 'Greek', 'Indian', 'Irish', 'Italian', 'Jamaican', 'Japanese', 'Kenyan', 'Malaysian', 'Mexican', 'Moroccan', 'Polish', 'Portuguese', 'Russian', 'Spanish', 'Thai', 'Tunisian', 'Turkish', 'Ukrainian', 'Uruguayan', 'Vietnamese'].includes(area.strArea) && '🍽️'}
+            </div>
+            <!-- Nombre del país traducido al español -->
+            <!-- Si no hay traducción disponible, muestra el nombre original en inglés -->
+            <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+              {countryTranslations[area.strArea] || area.strArea}
+            </h3>
+            <!-- Texto descriptivo que indica que es una cocina de ese país -->
+            <p class="text-sm text-gray-500 mt-2">
+              Cocina {countryTranslations[area.strArea] || area.strArea}
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>
