@@ -1,0 +1,72 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Obtenemos todas las categorías disponibles
+const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+const data = await response.json();
+const categories = data.meals;
+
+// Traducciones de categorías al español
+const categoryTranslations: { [key: string]: string } = {
+  'Beef': 'Carne de Res',
+  'Chicken': 'Pollo',
+  'Dessert': 'Postre',
+  'Lamb': 'Cordero',
+  'Miscellaneous': 'Varios',
+  'Pasta': 'Pasta',
+  'Pork': 'Cerdo',
+  'Seafood': 'Mariscos',
+  'Side': 'Guarniciones',
+  'Starter': 'Entrantes',
+  'Vegan': 'Vegano',
+  'Vegetarian': 'Vegetariano',
+  'Breakfast': 'Desayuno',
+  'Goat': 'Cabra'
+};
+---
+
+<Layout title="Categorías de Recetas">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">
+      Categorías de Recetas
+    </h1>
+    <p class="text-lg text-gray-600 text-center mb-12">
+      Explora recetas organizadas por tipo de cocina y ingredientes
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {categories.map((category: { strCategory: string }) => (
+        <a 
+          href={`/category/${category.strCategory.toLowerCase()}`}
+          class="group bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200"
+        >
+          <div class="p-6 text-center">
+            <div class="text-4xl mb-3">
+              {category.strCategory === 'Beef' && '🥩'}
+              {category.strCategory === 'Chicken' && '🍗'}
+              {category.strCategory === 'Dessert' && '🍰'}
+              {category.strCategory === 'Lamb' && '🐑'}
+              {category.strCategory === 'Miscellaneous' && '🍽️'}
+              {category.strCategory === 'Pasta' && '🍝'}
+              {category.strCategory === 'Pork' && '🐷'}
+              {category.strCategory === 'Seafood' && '🦐'}
+              {category.strCategory === 'Side' && '🥗'}
+              {category.strCategory === 'Starter' && '🥙'}
+              {category.strCategory === 'Vegan' && '🌱'}
+              {category.strCategory === 'Vegetarian' && '🥬'}
+              {category.strCategory === 'Breakfast' && '🍳'}
+              {category.strCategory === 'Goat' && '🐐'}
+              {!['Beef', 'Chicken', 'Dessert', 'Lamb', 'Miscellaneous', 'Pasta', 'Pork', 'Seafood', 'Side', 'Starter', 'Vegan', 'Vegetarian', 'Breakfast', 'Goat'].includes(category.strCategory) && '🍽️'}
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+              {categoryTranslations[category.strCategory] || category.strCategory}
+            </h3>
+            <p class="text-sm text-gray-500 mt-2">
+              Recetas de {categoryTranslations[category.strCategory] || category.strCategory}
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>
