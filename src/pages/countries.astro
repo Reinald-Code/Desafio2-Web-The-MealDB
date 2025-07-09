@@ -1,10 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-// Obtenemos todas las áreas/países disponibles
-const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list');
-const data = await response.json();
-const areas = data.meals;
+// Lista estática de países como fallback
+const staticCountries = [
+  'American', 'British', 'Canadian', 'Chinese', 'Croatian', 'Dutch', 
+  'Egyptian', 'Filipino', 'French', 'Greek', 'Indian', 'Irish', 
+  'Italian', 'Jamaican', 'Japanese', 'Kenyan', 'Malaysian', 'Mexican', 
+  'Moroccan', 'Polish', 'Portuguese', 'Russian', 'Spanish', 'Thai', 
+  'Tunisian', 'Turkish', 'Ukrainian', 'Uruguayan', 'Vietnamese'
+];
 
 // Traducciones de países al español
 const countryTranslations: { [key: string]: string } = {
@@ -38,6 +42,42 @@ const countryTranslations: { [key: string]: string } = {
   'Uruguayan': 'Uruguay',
   'Vietnamese': 'Vietnam'
 };
+
+// Función para obtener la bandera
+function getFlag(country: string): string {
+  const flags: { [key: string]: string } = {
+    'American': '🇺🇸',
+    'British': '🇬🇧',
+    'Canadian': '🇨🇦',
+    'Chinese': '🇨🇳',
+    'Croatian': '🇭🇷',
+    'Dutch': '🇳🇱',
+    'Egyptian': '🇪🇬',
+    'Filipino': '🇵🇭',
+    'French': '🇫🇷',
+    'Greek': '🇬🇷',
+    'Indian': '🇮🇳',
+    'Irish': '🇮🇪',
+    'Italian': '🇮🇹',
+    'Jamaican': '🇯🇲',
+    'Japanese': '🇯🇵',
+    'Kenyan': '🇰🇪',
+    'Malaysian': '🇲🇾',
+    'Mexican': '🇲🇽',
+    'Moroccan': '🇲🇦',
+    'Polish': '🇵🇱',
+    'Portuguese': '🇵🇹',
+    'Russian': '🇷🇺',
+    'Spanish': '🇪🇸',
+    'Thai': '🇹🇭',
+    'Tunisian': '🇹🇳',
+    'Turkish': '🇹🇷',
+    'Ukrainian': '🇺🇦',
+    'Uruguayan': '🇺🇾',
+    'Vietnamese': '🇻🇳'
+  };
+  return flags[country] || '🍽️';
+}
 ---
 
 <Layout title="Cocinas del Mundo - Recetas por País">
@@ -50,49 +90,20 @@ const countryTranslations: { [key: string]: string } = {
     </p>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-      {areas.map((area: { strArea: string }) => (
+      {staticCountries.map((country) => (
         <a 
-          href={`/country/${area.strArea.toLowerCase()}`}
+          href={`/country/${country.toLowerCase()}`}
           class="group bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200"
         >
           <div class="p-6 text-center">
             <div class="text-4xl mb-3">
-              {area.strArea === 'American' && '🇺🇸'}
-              {area.strArea === 'British' && '🇬🇧'}
-              {area.strArea === 'Canadian' && '🇨🇦'}
-              {area.strArea === 'Chinese' && '🇨🇳'}
-              {area.strArea === 'Croatian' && '🇭🇷'}
-              {area.strArea === 'Dutch' && '🇳🇱'}
-              {area.strArea === 'Egyptian' && '🇪🇬'}
-              {area.strArea === 'Filipino' && '🇵🇭'}
-              {area.strArea === 'French' && '🇫🇷'}
-              {area.strArea === 'Greek' && '🇬🇷'}
-              {area.strArea === 'Indian' && '🇮🇳'}
-              {area.strArea === 'Irish' && '🇮🇪'}
-              {area.strArea === 'Italian' && '🇮🇹'}
-              {area.strArea === 'Jamaican' && '🇯🇲'}
-              {area.strArea === 'Japanese' && '🇯🇵'}
-              {area.strArea === 'Kenyan' && '🇰🇪'}
-              {area.strArea === 'Malaysian' && '🇲🇾'}
-              {area.strArea === 'Mexican' && '🇲🇽'}
-              {area.strArea === 'Moroccan' && '🇲🇦'}
-              {area.strArea === 'Polish' && '🇵🇱'}
-              {area.strArea === 'Portuguese' && '🇵🇹'}
-              {area.strArea === 'Russian' && '🇷🇺'}
-              {area.strArea === 'Spanish' && '🇪🇸'}
-              {area.strArea === 'Thai' && '🇹🇭'}
-              {area.strArea === 'Tunisian' && '🇹🇳'}
-              {area.strArea === 'Turkish' && '🇹🇷'}
-              {area.strArea === 'Ukrainian' && '🇺🇦'}
-              {area.strArea === 'Uruguayan' && '🇺🇾'}
-              {area.strArea === 'Vietnamese' && '🇻🇳'}
-              {!['American', 'British', 'Canadian', 'Chinese', 'Croatian', 'Dutch', 'Egyptian', 'Filipino', 'French', 'Greek', 'Indian', 'Irish', 'Italian', 'Jamaican', 'Japanese', 'Kenyan', 'Malaysian', 'Mexican', 'Moroccan', 'Polish', 'Portuguese', 'Russian', 'Spanish', 'Thai', 'Tunisian', 'Turkish', 'Ukrainian', 'Uruguayan', 'Vietnamese'].includes(area.strArea) && '🍽️'}
+              {getFlag(country)}
             </div>
             <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
-              {countryTranslations[area.strArea] || area.strArea}
+              {countryTranslations[country] || country}
             </h3>
             <p class="text-sm text-gray-500 mt-2">
-              Cocina {countryTranslations[area.strArea] || area.strArea}
+              Cocina {countryTranslations[country] || country}
             </p>
           </div>
         </a>
