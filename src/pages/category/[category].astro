@@ -24,7 +24,7 @@ const meals = data.meals || []; // Usamos || [] por si no hay resultados
   {
     meals.length > 0 ? (
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {meals.map((meal) => (
+        {meals.map((meal: any) => (
           <MealCard client:load meal={meal} />
         ))}
       </div>
