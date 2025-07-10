@@ -10,6 +10,7 @@ interface Meal {
 // Importamos los componentes necesarios para construir la página
 import Layout from '../layouts/Layout.astro';
 import MealCard from '../components/MealCard.jsx';
+import SearchBar from '../components/SearchBar.jsx';
 
 // Función que obtiene una receta aleatoria de la API
 async function getRandomMeal(): Promise<Meal> {
@@ -41,10 +42,7 @@ const uniqueMeals = Array.from(new Map(meals.map(meal => [meal.idMeal, meal])).v
                 ></path>
               </svg>
             </div>
-            <input
-              placeholder="Buscar recetas..."
-              class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1b0e0e] focus:outline-0 focus:ring-0 border-none bg-[#f3e7e8] focus:border-none h-full placeholder:text-[#994d51] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
-            />
+            <SearchBar client:only="react" />
           </div>
         </label>
       </div>
