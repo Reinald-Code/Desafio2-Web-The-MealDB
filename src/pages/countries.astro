@@ -90,16 +90,18 @@ function getFlag(country: string): string {
         Explora las deliciosas recetas tradicionales de diferentes países
       </p>
 
-      <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 p-4">
         {staticCountries.map((country) => (
           <a 
             href={`/country/${country.toLowerCase()}`}
-            class="flex flex-col gap-3 pb-3 group"
+            class="flex flex-col gap-3 pb-3 group w-full max-w-[220px] justify-self-center"
           >
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg bg-[#f3e7e8] flex items-center justify-center text-6xl">
-              {getFlag(country)}
+            <div class="relative w-full bg-[#f3e7e8] aspect-square rounded-lg overflow-hidden group-hover:shadow-lg transition-all duration-300">
+              <div class="absolute inset-0 flex items-center justify-center text-[72px] transform group-hover:scale-110 transition-transform duration-300">
+                {getFlag(country)}
+              </div>
             </div>
-            <div>
+            <div class="text-center">
               <p class="text-[#1b0e0e] text-base font-medium leading-normal group-hover:text-[#994d51] transition-colors">
                 {countryTranslations[country] || country}
               </p>
