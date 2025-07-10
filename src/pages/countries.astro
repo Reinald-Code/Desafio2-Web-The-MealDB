@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 
 // Lista estática de países como fallback
 const staticCountries = [
-  'American', 'British', 'Canadian', 'Chinese', 'Croatian', 'Dutch', 
+  'American', 'British', 'Canadian', 'Chinese', 'Chile','Croatian', 'Dutch', 
   'Egyptian', 'Filipino', 'French', 'Greek', 'Indian', 'Irish', 
   'Italian', 'Jamaican', 'Japanese', 'Kenyan', 'Malaysian', 'Mexican', 
   'Moroccan', 'Polish', 'Portuguese', 'Russian', 'Spanish', 'Thai', 
@@ -16,6 +16,7 @@ const countryTranslations: { [key: string]: string } = {
   'British': 'Británica',
   'Canadian': 'Canadiense',
   'Chinese': 'China',
+  'Chile': 'Chile',
   'Croatian': 'Croacia',
   'Dutch': 'Holanda',
   'Egyptian': 'Egipto',
@@ -50,6 +51,7 @@ function getFlag(country: string): string {
     'British': '🇬🇧',
     'Canadian': '🇨🇦',
     'Chinese': '🇨🇳',
+    'Chile': '🇨l',
     'Croatian': '🇭🇷',
     'Dutch': '🇳🇱',
     'Egyptian': '🇪🇬',
@@ -78,6 +80,43 @@ function getFlag(country: string): string {
   };
   return flags[country] || '🍽️';
 }
+
+const countryFlags: { [key: string]: string } = {
+  'American': 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg',
+  'British': 'https://upload.wikimedia.org/wikipedia/commons/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg',
+  'Canadian': 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Canada_%28Pantone%29.svg',
+  'Chinese': 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg',
+  'Chile': 'https://upload.wikimedia.org/wikipedia/commons/7/78/Flag_of_Chile.svg',
+  'Croatian': 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Flag_of_Croatia.svg',
+  'Dutch': 'https://upload.wikimedia.org/wikipedia/commons/2/20/Flag_of_the_Netherlands.svg',
+  'Egyptian': 'https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Egypt.svg',
+  'Filipino': 'https://upload.wikimedia.org/wikipedia/commons/9/99/Flag_of_the_Philippines.svg',
+  'French': 'https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg',
+  'Greek': 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Greece.svg',
+  'Indian': 'https://upload.wikimedia.org/wikipedia/commons/4/41/Flag_of_India.svg',
+  'Irish': 'https://upload.wikimedia.org/wikipedia/commons/4/45/Flag_of_Ireland.svg',
+  'Italian': 'https://upload.wikimedia.org/wikipedia/commons/0/03/Flag_of_Italy.svg',
+  'Jamaican': 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Flag_of_Jamaica.svg',
+  'Japanese': 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Flag_of_Japan.svg',
+  'Kenyan': 'https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Kenya.svg',
+  'Malaysian': 'https://upload.wikimedia.org/wikipedia/commons/6/66/Flag_of_Malaysia.svg',
+  'Mexican': 'https://upload.wikimedia.org/wikipedia/commons/f/fc/Flag_of_Mexico.svg',
+  'Moroccan': 'https://upload.wikimedia.org/wikipedia/commons/2/2c/Flag_of_Morocco.svg',
+  'Polish': 'https://upload.wikimedia.org/wikipedia/commons/1/12/Flag_of_Poland.svg',
+  'Portuguese': 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg',
+  'Russian': 'https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg',
+  'Spanish': 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg',
+  'Thai': 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Flag_of_Thailand.svg',
+  'Tunisian': 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Flag_of_Tunisia.svg',
+  'Turkish': 'https://upload.wikimedia.org/wikipedia/commons/b/b4/Flag_of_Turkey.svg',
+  'Ukrainian': 'https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg',
+  'Uruguayan': 'https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Uruguay.svg',
+  'Vietnamese': 'https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg'
+};
+
+function getBackgroundImage(country: string): string {
+  return countryFlags[country] || '';
+}
 ---
 
 <Layout title="Cocinas del Mundo - Recetas por País">
@@ -97,7 +136,13 @@ function getFlag(country: string): string {
             class="flex flex-col gap-3 pb-3 group w-full max-w-[220px] justify-self-center"
           >
             <div class="relative w-full bg-[#f3e7e8] aspect-square rounded-lg overflow-hidden group-hover:shadow-lg transition-all duration-300">
-              <div class="absolute inset-0 flex items-center justify-center text-[72px] transform group-hover:scale-110 transition-transform duration-300">
+              <img 
+                src={getBackgroundImage(country)}
+                alt={`Bandera de ${countryTranslations[country] || country}`}
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              />
+              <div class="absolute inset-0 hidden items-center justify-center text-[72px] transform group-hover:scale-110 transition-transform duration-300">
                 {getFlag(country)}
               </div>
             </div>
