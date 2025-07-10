@@ -18,8 +18,8 @@ async function getRandomMeal(): Promise<Meal> {
   const data = await response.json();
   return data.meals[0];
 }
-// Obtenemos 12 recetas aleatorias
-const mealPromises = Array(12).fill(null).map(() => getRandomMeal());
+// Obtenemos 15 recetas aleatorias
+const mealPromises = Array(15).fill(null).map(() => getRandomMeal());
 const meals: Meal[] = await Promise.all(mealPromises);
 
 // Eliminamos posibles recetas duplicadas
