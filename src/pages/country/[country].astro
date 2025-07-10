@@ -70,62 +70,81 @@ const categories = [...new Set(meals.map((meal: any) => meal.strCategory).filter
 ---
 
 <Layout title={`Recetas de ${displayCountryName}`}>
-  <div class="container mx-auto px-4 py-8">
-    <div class="flex items-center mb-6">
-      <a href="/countries" class="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600 transition-colors">
-        ← Volver a Países
-      </a>
-      <h1 class="text-3xl font-bold ml-4 text-gray-800">Cocina {displayCountryName}</h1>
-    </div>
-
-    {error && (
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-8">
-        <p class="font-bold">Error:</p>
-        <p>{error}</p>
-        <p class="mt-2">Por favor, verifica tu conexión a internet e intenta recargar la página.</p>
+  <div class="px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+      <div class="flex items-center mb-6 px-4">
+        <a href="/countries" class="flex items-center gap-2 text-[#994d51] hover:text-[#1b0e0e] transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
+          </svg>
+          Volver a Países
+        </a>
       </div>
-    )}
+      
+      <h2 class="text-[#1b0e0e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3">
+        Cocina {displayCountryName}
+      </h2>
 
-    {categories.length > 0 && (
-      <div class="mb-8">
-        <h2 class="text-2xl font-semibold mb-4 text-gray-700">Categorías disponibles:</h2>
-        <div class="flex flex-wrap gap-2">
-          {categories.map((category: any) => (
-            category && typeof category === 'string' ? (
-              <a 
-                href={`/category/${category.toLowerCase()}`}
-                class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm hover:bg-blue-200 transition-colors"
-              >
-                {category}
-              </a>
-            ) : null
-          ))}
+      {error && (
+        <div class="mx-4 mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          <p class="font-bold">Error:</p>
+          <p>{error}</p>
+          <p class="mt-2">Por favor, verifica tu conexión a internet e intenta recargar la página.</p>
         </div>
-      </div>
-    )}
+      )}
 
-    {
-      meals.length > 0 ? (
-        <div>
-          <h2 class="text-2xl font-semibold mb-6 text-gray-700">
-            Todas las recetas ({meals.length})
-          </h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {meals.map((meal: any) => (
-              <MealCard client:load meal={meal} />
+      {categories.length > 0 && (
+        <div class="px-4 mb-6">
+          <h3 class="text-[#1b0e0e] text-lg font-semibold mb-3">Categorías disponibles:</h3>
+          <div class="flex flex-wrap gap-2">
+            {categories.map((category: any) => (
+              category && typeof category === 'string' ? (
+                <a 
+                  href={`/category/${category.toLowerCase()}`}
+                  class="bg-[#f3e7e8] text-[#994d51] px-3 py-1 rounded-full text-sm hover:bg-[#994d51] hover:text-white transition-colors"
+                >
+                  {category}
+                </a>
+              ) : null
             ))}
           </div>
         </div>
-      ) : (
-        <div class="text-center py-12">
-          <p class="text-xl text-gray-500 mb-4">
-            No se encontraron recetas para la cocina {displayCountryName}.
-          </p>
-          <a href="/countries" class="text-blue-600 hover:text-blue-800 underline">
-            Ver otros países disponibles
-          </a>
-        </div>
-      )
-    }
+      )}
+
+      {
+        meals.length > 0 ? (
+          <div class="px-4">
+            <h3 class="text-[#1b0e0e] text-lg font-semibold mb-4">
+              Todas las recetas ({meals.length})
+            </h3>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3">
+              {meals.map((meal: any) => (
+                <a href={`/meal/${meal.idMeal}`} class="flex flex-col gap-3 pb-3 group cursor-pointer">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg group-hover:scale-105 transition-transform duration-200"
+                    style={`background-image: url("${meal.strMealThumb}");`}
+                  ></div>
+                  <div>
+                    <p class="text-[#1b0e0e] text-base font-medium leading-normal group-hover:text-[#994d51] transition-colors">{meal.strMeal}</p>
+                    <p class="text-[#994d51] text-sm font-normal leading-normal">
+                      Ver receta completa
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : !error ? (
+          <div class="text-center py-12 px-4">
+            <p class="text-[#994d51] text-xl mb-4">
+              No se encontraron recetas para la cocina {displayCountryName}.
+            </p>
+            <a href="/countries" class="text-[#1b0e0e] hover:text-[#994d51] underline">
+              Ver otros países disponibles
+            </a>
+          </div>
+        ) : null
+      }
+    </div>
   </div>
 </Layout>

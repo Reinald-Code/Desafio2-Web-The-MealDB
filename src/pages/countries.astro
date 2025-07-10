@@ -81,33 +81,35 @@ function getFlag(country: string): string {
 ---
 
 <Layout title="Cocinas del Mundo - Recetas por País">
-  <div class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">
-      Cocinas del Mundo
-    </h1>
-    <p class="text-lg text-gray-600 text-center mb-12">
-      Explora las deliciosas recetas tradicionales de diferentes países
-    </p>
+  <div class="px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+      <h2 class="text-[#1b0e0e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
+        Cocinas del Mundo
+      </h2>
+      <p class="text-[#994d51] text-base font-normal leading-normal px-4 pb-8">
+        Explora las deliciosas recetas tradicionales de diferentes países
+      </p>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-      {staticCountries.map((country) => (
-        <a 
-          href={`/country/${country.toLowerCase()}`}
-          class="group bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200"
-        >
-          <div class="p-6 text-center">
-            <div class="text-4xl mb-3">
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+        {staticCountries.map((country) => (
+          <a 
+            href={`/country/${country.toLowerCase()}`}
+            class="flex flex-col gap-3 pb-3 group"
+          >
+            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg bg-[#f3e7e8] flex items-center justify-center text-6xl">
               {getFlag(country)}
             </div>
-            <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
-              {countryTranslations[country] || country}
-            </h3>
-            <p class="text-sm text-gray-500 mt-2">
-              Cocina {countryTranslations[country] || country}
-            </p>
-          </div>
-        </a>
-      ))}
+            <div>
+              <p class="text-[#1b0e0e] text-base font-medium leading-normal group-hover:text-[#994d51] transition-colors">
+                {countryTranslations[country] || country}
+              </p>
+              <p class="text-[#994d51] text-sm font-normal leading-normal">
+                Cocina {countryTranslations[country] || country}
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
     </div>
   </div>
 </Layout>

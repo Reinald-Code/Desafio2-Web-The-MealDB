@@ -26,22 +26,19 @@ const categoryTranslations: { [key: string]: string } = {
 ---
 
 <Layout title="Categorías de Recetas">
-  <div class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">
-      Categorías de Recetas
-    </h1>
-    <p class="text-lg text-gray-600 text-center mb-12">
-      Explora recetas organizadas por tipo de cocina y ingredientes
-    </p>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {categories.map((category: { strCategory: string }) => (
-        <a 
-          href={`/category/${category.strCategory.toLowerCase()}`}
-          class="group bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200"
-        >
-          <div class="p-6 text-center">
-            <div class="text-4xl mb-3">
+  <div class="px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+      <div class="flex flex-wrap justify-between gap-3 p-4">
+        <p class="text-[#1b0e0e] tracking-light text-[32px] font-bold leading-tight min-w-72">Categorías</p>
+      </div>
+      
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+        {categories.map((category: { strCategory: string }) => (
+          <a 
+            href={`/category/${category.strCategory.toLowerCase()}`}
+            class="flex flex-1 gap-3 rounded-lg border border-[#e7d0d1] bg-[#fcf8f8] p-4 items-center hover:bg-[#f3e7e8] transition-colors group"
+          >
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg w-10 shrink-0 text-2xl flex items-center justify-center bg-[#f3e7e8]">
               {category.strCategory === 'Beef' && '🥩'}
               {category.strCategory === 'Chicken' && '🍗'}
               {category.strCategory === 'Dessert' && '🍰'}
@@ -58,15 +55,12 @@ const categoryTranslations: { [key: string]: string } = {
               {category.strCategory === 'Goat' && '🐐'}
               {!['Beef', 'Chicken', 'Dessert', 'Lamb', 'Miscellaneous', 'Pasta', 'Pork', 'Seafood', 'Side', 'Starter', 'Vegan', 'Vegetarian', 'Breakfast', 'Goat'].includes(category.strCategory) && '🍽️'}
             </div>
-            <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+            <h2 class="text-[#1b0e0e] text-base font-bold leading-tight group-hover:text-[#994d51] transition-colors">
               {categoryTranslations[category.strCategory] || category.strCategory}
-            </h3>
-            <p class="text-sm text-gray-500 mt-2">
-              Recetas de {categoryTranslations[category.strCategory] || category.strCategory}
-            </p>
-          </div>
-        </a>
-      ))}
+            </h2>
+          </a>
+        ))}
+      </div>
     </div>
   </div>
 </Layout>

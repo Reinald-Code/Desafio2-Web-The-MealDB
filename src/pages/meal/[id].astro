@@ -3,53 +3,154 @@ import Layout from '../../layouts/Layout.astro';
 
 const { id } = Astro.params;
 
-const response = await fetch(
-  `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
-);
-const data = await response.json();
-const meal = data.meals[0];
+// Verificamos que el ID exista
+if (!id) {
+  return Astro.redirect('/');
+}
+
+let meal: any = null;
+let error = '';
+
+try {
+  const response = await fetch(
+    `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
+  );
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
+  meal = data.meals?.[0];
+  
+  if (!meal) {
+    throw new Error('Receta no encontrada');
+  }
+} catch (e) {
+  error = `Error al cargar la receta: ${e instanceof Error ? e.message : 'Error desconocido'}`;
+  console.error('Error fetching meal:', e);
+}
 
 // La API devuelve hasta 20 ingredientes y medidas en campos separados.
 // Esta función los une en una sola lista.
-const ingredients = [];
-for (let i = 1; i <= 20; i++) {
-  if (meal[`strIngredient${i}`]) {
-    ingredients.push(
-      `${meal[`strIngredient${i}`]} - ${meal[`strMeasure${i}`]}`
-    );
+const ingredients: string[] = [];
+if (meal) {
+  for (let i = 1; i <= 20; i++) {
+    if (meal[`strIngredient${i}`] && meal[`strIngredient${i}`].trim()) {
+      const ingredient = meal[`strIngredient${i}`].trim();
+      const measure = meal[`strMeasure${i}`]?.trim() || '';
+      ingredients.push(measure ? `${measure} ${ingredient}` : ingredient);
+    }
   }
 }
+
+// Función para extraer el ID del video de YouTube
+function getYouTubeVideoId(url: string): string | null {
+  if (!url) return null;
+  const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+  return match ? match[1] : null;
+}
+
+const videoId = meal?.strYoutube ? getYouTubeVideoId(meal.strYoutube) : null;
+const videoThumbnail = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null;
 ---
 
-<Layout title={meal.strMeal}>
-  <div class="mb-6">
-    <a href="/" class="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600">
-      ← Volver a Inicio
-    </a>
-  </div>
-
-  <div class="bg-white p-6 rounded-lg shadow-lg">
-    <h1 class="text-4xl font-extrabold mb-4">{meal.strMeal}</h1>
-    <p class="text-lg text-gray-600 mb-4">
-      Categoría: <a href={`/category/${meal.strCategory}`} class="text-orange-600 hover:underline">{meal.strCategory}</a> | Origen: {meal.strArea}
-    </p>
-
-    <img src={meal.strMealThumb} alt={meal.strMeal} class="w-full max-w-2xl mx-auto rounded-lg mb-6" />
-
-    <div class="grid md:grid-cols-3 gap-8">
-      <!-- Columna de Ingredientes -->
-      <div class="md:col-span-1">
-        <h2 class="text-2xl font-bold mb-3 border-b-2 border-orange-400 pb-2">Ingredientes</h2>
-        <ul class="list-disc list-inside space-y-2">
-          {ingredients.map(ing => <li>{ing}</li>)}
-        </ul>
-      </div>
-
-      <!-- Columna de Instrucciones -->
-      <div class="md:col-span-2">
-        <h2 class="text-2xl font-bold mb-3 border-b-2 border-orange-400 pb-2">Instrucciones</h2>
-        <p class="whitespace-pre-wrap leading-relaxed">{meal.strInstructions}</p>
+{error ? (
+  <Layout title="Error - Receta no encontrada">
+    <div class="px-40 flex flex-1 justify-center py-5">
+      <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <div class="text-center py-12">
+          <h1 class="text-[#1b0e0e] text-[32px] font-bold mb-4">Error</h1>
+          <p class="text-[#994d51] text-lg mb-6">{error}</p>
+          <a href="/" class="bg-[#f3e7e8] text-[#1b0e0e] px-6 py-3 rounded-lg hover:bg-[#994d51] hover:text-white transition-colors">
+            Volver al Inicio
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-</Layout>
+  </Layout>
+) : (
+  <Layout title={meal.strMeal}>
+    <div class="px-40 flex flex-1 justify-center py-5">
+      <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <div class="flex flex-wrap justify-between gap-3 p-4">
+          <p class="text-[#1b0e0e] tracking-light text-[32px] font-bold leading-tight min-w-72">{meal.strMeal}</p>
+        </div>
+        
+        <div class="flex w-full grow bg-[#fcf8f8] @container p-4">
+          <div class="w-full gap-1 overflow-hidden bg-[#fcf8f8] @[480px]:gap-2 aspect-[3/2] rounded-lg flex">
+            <div
+              class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
+              style={`background-image: url("${meal.strMealThumb}");`}
+            ></div>
+          </div>
+        </div>
+
+        <div class="px-4 py-6">
+          <div class="flex flex-wrap gap-3">
+            <a href={`/category/${meal.strCategory}`} class="flex items-center gap-2 bg-[#f3e7e8] px-4 py-2 rounded-full hover:bg-[#994d51] hover:text-white transition-all duration-300 group">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="text-[#994d51] group-hover:text-white">
+                <path d="M224,177.32V78.68a8,8,0,0,0-4.07-6.93l-88-49.5a8,8,0,0,0-7.86,0l-88,49.5A8,8,0,0,0,32,78.68v98.64a8,8,0,0,0,4.07,6.93l88,49.5a8,8,0,0,0,7.86,0l88-49.5A8,8,0,0,0,224,177.32Z"></path>
+              </svg>
+              <span class="text-[#1b0e0e] text-sm font-semibold group-hover:text-white">Categoría</span>
+              <span class="text-[#994d51] text-sm font-bold group-hover:text-white">{meal.strCategory}</span>
+            </a>
+            <a href={`/country/${meal.strArea}`} class="flex items-center gap-2 bg-[#f3e7e8] px-4 py-2 rounded-full hover:bg-[#994d51] hover:text-white transition-all duration-300 group">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="text-[#994d51] group-hover:text-white">
+                <path d="M240,128A112,112,0,0,1,128,240H88a8,8,0,0,1,0-16h40a96,96,0,1,0-96-96v8a8,8,0,0,1-16,0v-8A112,112,0,0,1,240,128Z"></path>
+                <path d="M132,168a12,12,0,1,1-12-12A12,12,0,0,1,132,168Z"></path>
+              </svg>
+              <span class="text-[#1b0e0e] text-sm font-semibold group-hover:text-white">País</span>
+              <span class="text-[#994d51] text-sm font-bold group-hover:text-white">{meal.strArea}</span>
+            </a>
+          </div>
+        </div>
+        
+        <h2 class="text-[#1b0e0e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Ingredientes</h2>
+        <div class="text-[#1b0e0e] text-base font-normal leading-normal pb-3 pt-1 px-4">
+          <ul class="space-y-1">
+            {ingredients.map(ingredient => (
+              <li class="flex items-center gap-2">
+                <span class="w-2 h-2 bg-[#994d51] rounded-full flex-shrink-0"></span>
+                {ingredient}
+              </li>
+            ))}
+          </ul>
+        </div>
+        
+        <h2 class="text-[#1b0e0e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Instrucciones</h2>
+        <p class="text-[#1b0e0e] text-base font-normal leading-normal pb-3 pt-1 px-4 whitespace-pre-wrap">
+          {meal.strInstructions}
+        </p>
+        
+        {videoThumbnail && meal.strYoutube && (
+          <div>
+            <h2 class="text-[#1b0e0e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Video Tutorial</h2>
+            <div class="p-4">
+              <div
+                class="relative flex items-center justify-center bg-[#e92932] bg-cover bg-center aspect-video rounded-lg p-4 cursor-pointer group"
+                style={`background-image: url("${videoThumbnail}");`}
+                onclick={`window.open('${meal.strYoutube}', '_blank')`}
+              >
+                <button class="flex shrink-0 items-center justify-center rounded-full size-16 bg-black/40 text-white group-hover:bg-black/60 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        <div class="flex px-4 py-3 justify-start">
+          <button
+            onclick="history.back()"
+            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#f3e7e8] text-[#1b0e0e] text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#994d51] hover:text-white transition-colors"
+          >
+            <span class="truncate">Volver</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </Layout>
+)}

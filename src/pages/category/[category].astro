@@ -30,32 +30,61 @@ try {
 ---
 
 <Layout title={`Recetas de ${category}`}>
-  <div class="container mx-auto px-4 py-8">
-    <div class="flex items-center mb-6">
-      <a href="/categories" class="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600">
-        ← Volver a Categorías
-      </a>
-      <h1 class="text-3xl font-bold ml-4">Categoría: {category}</h1>
-    </div>
-
-    {error && (
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-8">
-        <p class="font-bold">Error:</p>
-        <p>{error}</p>
-        <p class="mt-2">Por favor, verifica tu conexión a internet e intenta recargar la página.</p>
+  <div class="px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+      <div class="flex items-center mb-6 px-4">
+        <a href="/categories" class="flex items-center gap-2 text-[#994d51] hover:text-[#1b0e0e] transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
+          </svg>
+          Volver a Categorías
+        </a>
       </div>
-    )}
+      
+      <h2 class="text-[#1b0e0e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3">
+        Categoría: {category}
+      </h2>
 
-    {
-      meals.length > 0 ? (
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {meals.map((meal: any) => (
-            <MealCard client:load meal={meal} />
-          ))}
+      {error && (
+        <div class="mx-4 mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          <p class="font-bold">Error:</p>
+          <p>{error}</p>
+          <p class="mt-2">Por favor, verifica tu conexión a internet e intenta recargar la página.</p>
         </div>
-      ) : !error ? (
-        <p class="text-center text-gray-500">No se encontraron recetas en esta categoría.</p>
-      ) : null
-    }
+      )}
+
+      {
+        meals.length > 0 ? (
+          <div class="px-4">
+            <h3 class="text-[#1b0e0e] text-lg font-semibold mb-4">
+              Recetas encontradas ({meals.length})
+            </h3>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3">
+              {meals.map((meal: any) => (
+                <a href={`/meal/${meal.idMeal}`} class="flex flex-col gap-3 pb-3 group cursor-pointer">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg group-hover:scale-105 transition-transform duration-200"
+                    style={`background-image: url("${meal.strMealThumb}");`}
+                  ></div>
+                  <div>
+                    <p class="text-[#1b0e0e] text-base font-medium leading-normal group-hover:text-[#994d51] transition-colors">{meal.strMeal}</p>
+                    <p class="text-[#994d51] text-sm font-normal leading-normal">
+                      Ver receta completa
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : !error ? (
+          <div class="text-center py-12 px-4">
+            <p class="text-[#994d51] text-xl mb-4">No se encontraron recetas en esta categoría.</p>
+            <a href="/categories" class="text-[#1b0e0e] hover:text-[#994d51] underline">
+              Ver todas las categorías
+            </a>
+          </div>
+        ) : null
+      }
+    </div>
   </div>
 </Layout>
