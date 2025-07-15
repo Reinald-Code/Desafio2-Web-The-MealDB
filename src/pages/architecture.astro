@@ -1,0 +1,263 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Arquitectura del Sistema - RecetasDelMundo">
+  <div class="px-40 flex flex-1 justify-center py-5">
+    <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+      <div class="flex items-center gap-4 px-4 py-3">
+        <a href="/" class="flex items-center justify-center rounded-lg bg-[#f3e7e8] p-2 text-[#994d51] hover:bg-[#fadcdc] transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
+          </svg>
+        </a>
+        <h1 class="text-2xl font-bold text-[#1b0e0e]">Arquitectura del Sistema</h1>
+      </div>
+
+      <!-- Diagrama Principal -->
+      <section class="px-4 py-6">
+        <h2 class="text-xl font-bold text-[#1b0e0e] mb-6">Diagrama de Arquitectura</h2>
+        
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+          <!-- Frontend Layer -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold text-[#994d51] mb-4 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM48,48H208V88H48ZM48,208V104H208V208Z"></path>
+              </svg>
+              Capa de Presentación (Frontend)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-[#f3e7e8] p-4 rounded-lg border-l-4 border-[#994d51]">
+                <h4 class="font-bold text-[#1b0e0e] mb-2">Astro Framework</h4>
+                <p class="text-sm text-gray-600">Framework principal para SSR y optimización</p>
+              </div>
+              <div class="bg-[#f3e7e8] p-4 rounded-lg border-l-4 border-[#994d51]">
+                <h4 class="font-bold text-[#1b0e0e] mb-2">React Components</h4>
+                <p class="text-sm text-gray-600">Componentes interactivos (SearchBar, MealCard)</p>
+              </div>
+              <div class="bg-[#f3e7e8] p-4 rounded-lg border-l-4 border-[#994d51]">
+                <h4 class="font-bold text-[#1b0e0e] mb-2">Tailwind CSS</h4>
+                <p class="text-sm text-gray-600">Framework de estilos utilitarios</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Routing Layer -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold text-[#994d51] mb-4 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"></path>
+              </svg>
+              Capa de Enrutamiento
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div class="bg-blue-50 p-3 rounded text-center border border-blue-200">
+                <div class="font-semibold text-blue-800">/</div>
+                <div class="text-xs text-blue-600">Inicio</div>
+              </div>
+              <div class="bg-blue-50 p-3 rounded text-center border border-blue-200">
+                <div class="font-semibold text-blue-800">/search</div>
+                <div class="text-xs text-blue-600">Búsqueda</div>
+              </div>
+              <div class="bg-blue-50 p-3 rounded text-center border border-blue-200">
+                <div class="font-semibold text-blue-800">/categories</div>
+                <div class="text-xs text-blue-600">Categorías</div>
+              </div>
+              <div class="bg-blue-50 p-3 rounded text-center border border-blue-200">
+                <div class="font-semibold text-blue-800">/countries</div>
+                <div class="text-xs text-blue-600">Países</div>
+              </div>
+              <div class="bg-blue-50 p-3 rounded text-center border border-blue-200">
+                <div class="font-semibold text-blue-800">/meal/[id]</div>
+                <div class="text-xs text-blue-600">Receta</div>
+              </div>
+              <div class="bg-blue-50 p-3 rounded text-center border border-blue-200">
+                <div class="font-semibold text-blue-800">/category/[cat]</div>
+                <div class="text-xs text-blue-600">Por Categoría</div>
+              </div>
+              <div class="bg-blue-50 p-3 rounded text-center border border-blue-200">
+                <div class="font-semibold text-blue-800">/country/[country]</div>
+                <div class="text-xs text-blue-600">Por País</div>
+              </div>
+              <div class="bg-blue-50 p-3 rounded text-center border border-blue-200">
+                <div class="font-semibold text-blue-800">/team</div>
+                <div class="text-xs text-blue-600">Equipo</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- API Layer -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold text-[#994d51] mb-4 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Z"></path>
+                <path d="M164.49,99.51a12,12,0,0,1,0,17l-28,28a12,12,0,0,1-17,0l-28-28a12,12,0,0,1,17-17L128,119l19.51-19.52A12,12,0,0,1,164.49,99.51Z"></path>
+              </svg>
+              Capa de Integración API
+            </h3>
+            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+              <div class="text-center mb-4">
+                <h4 class="font-bold text-green-800">TheMealDB API</h4>
+                <p class="text-sm text-green-600">https://www.themealdb.com/api/json/v1/1/</p>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="bg-white p-3 rounded border">
+                  <h5 class="font-semibold text-green-800">Search</h5>
+                  <p class="text-xs text-green-600">search.php?s=...</p>
+                  <p class="text-xs">Búsqueda por nombre</p>
+                </div>
+                <div class="bg-white p-3 rounded border">
+                  <h5 class="font-semibold text-green-800">Filter</h5>
+                  <p class="text-xs text-green-600">filter.php?c=...</p>
+                  <p class="text-xs">Filtrar por categoría/país</p>
+                </div>
+                <div class="bg-white p-3 rounded border">
+                  <h5 class="font-semibold text-green-800">Lookup</h5>
+                  <p class="text-xs text-green-600">lookup.php?i=...</p>
+                  <p class="text-xs">Obtener receta por ID</p>
+                </div>
+                <div class="bg-white p-3 rounded border">
+                  <h5 class="font-semibold text-green-800">Random</h5>
+                  <p class="text-xs text-green-600">random.php</p>
+                  <p class="text-xs">Receta aleatoria</p>
+                </div>
+                <div class="bg-white p-3 rounded border">
+                  <h5 class="font-semibold text-green-800">Categories</h5>
+                  <p class="text-xs text-green-600">list.php?c=list</p>
+                  <p class="text-xs">Lista de categorías</p>
+                </div>
+                <div class="bg-white p-3 rounded border">
+                  <h5 class="font-semibold text-green-800">Countries</h5>
+                  <p class="text-xs text-green-600">list.php?a=list</p>
+                  <p class="text-xs">Lista de países</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data Flow -->
+          <div>
+            <h3 class="text-lg font-semibold text-[#994d51] mb-4 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224,177.32V78.68a8,8,0,0,0-4.07-6.93l-88-49.5a8,8,0,0,0-7.86,0l-88,49.5A8,8,0,0,0,32,78.68v98.64a8,8,0,0,0,4.07,6.93l88,49.5a8,8,0,0,0,7.86,0l88-49.5A8,8,0,0,0,224,177.32Z"></path>
+              </svg>
+              Flujo de Datos
+            </h3>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div class="bg-purple-50 p-4 rounded-lg border border-purple-200 flex-1">
+                <h4 class="font-bold text-purple-800 mb-2">1. Usuario Interactúa</h4>
+                <p class="text-sm text-purple-600">Navega, busca o filtra contenido</p>
+              </div>
+              <div class="text-purple-500">→</div>
+              <div class="bg-purple-50 p-4 rounded-lg border border-purple-200 flex-1">
+                <h4 class="font-bold text-purple-800 mb-2">2. Frontend Procesa</h4>
+                <p class="text-sm text-purple-600">Componentes React/Astro manejan la interacción</p>
+              </div>
+              <div class="text-purple-500">→</div>
+              <div class="bg-purple-50 p-4 rounded-lg border border-purple-200 flex-1">
+                <h4 class="font-bold text-purple-800 mb-2">3. API Call</h4>
+                <p class="text-sm text-purple-600">Fetch a TheMealDB API</p>
+              </div>
+              <div class="text-purple-500">→</div>
+              <div class="bg-purple-50 p-4 rounded-lg border border-purple-200 flex-1">
+                <h4 class="font-bold text-purple-800 mb-2">4. Renderizado</h4>
+                <p class="text-sm text-purple-600">Datos mostrados al usuario</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Características Técnicas -->
+      <section class="px-4 py-6">
+        <h2 class="text-xl font-bold text-[#1b0e0e] mb-6">Características Técnicas</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-[#994d51] mb-4">Frontend Technologies</h3>
+            <ul class="space-y-3">
+              <li class="flex items-center gap-3">
+                <div class="w-3 h-3 bg-[#994d51] rounded-full"></div>
+                <span><strong>Astro:</strong> Framework principal con SSR</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <div class="w-3 h-3 bg-[#994d51] rounded-full"></div>
+                <span><strong>React:</strong> Componentes interactivos</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <div class="w-3 h-3 bg-[#994d51] rounded-full"></div>
+                <span><strong>TypeScript:</strong> Tipado estático</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <div class="w-3 h-3 bg-[#994d51] rounded-full"></div>
+                <span><strong>Tailwind CSS:</strong> Estilos utilitarios</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-[#994d51] mb-4">Funcionalidades Clave</h3>
+            <ul class="space-y-3">
+              <li class="flex items-center gap-3">
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span>Búsqueda instantánea con debounce</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span>Navegación por categorías y países</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span>Diseño responsive y moderno</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span>Integración completa con API externa</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Responsive Design -->
+      <section class="px-4 py-6">
+        <h2 class="text-xl font-bold text-[#1b0e0e] mb-6">Diseño Responsive</h2>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="text-center">
+              <div class="bg-[#f3e7e8] p-4 rounded-lg mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#994d51" viewBox="0 0 256 256" class="mx-auto">
+                  <path d="M208,40H48A24,24,0,0,0,24,64V192a24,24,0,0,0,24,24H208a24,24,0,0,0,24-24V64A24,24,0,0,0,208,40Zm8,152a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V64a8,8,0,0,1,8-8H208a8,8,0,0,1,8,8Z"></path>
+                </svg>
+              </div>
+              <h3 class="font-bold text-[#1b0e0e] mb-2">Desktop</h3>
+              <p class="text-sm text-gray-600">Diseño completo con sidebar y múltiples columnas</p>
+            </div>
+            
+            <div class="text-center">
+              <div class="bg-[#f3e7e8] p-4 rounded-lg mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#994d51" viewBox="0 0 256 256" class="mx-auto">
+                  <path d="M192,24H64A24,24,0,0,0,40,48V208a24,24,0,0,0,24,24H192a24,24,0,0,0,24-24V48A24,24,0,0,0,192,24Zm8,184a8,8,0,0,1-8,8H64a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8H192a8,8,0,0,1,8,8Z"></path>
+                </svg>
+              </div>
+              <h3 class="font-bold text-[#1b0e0e] mb-2">Tablet</h3>
+              <p class="text-sm text-gray-600">Adaptación de grillas y espaciado optimizado</p>
+            </div>
+            
+            <div class="text-center">
+              <div class="bg-[#f3e7e8] p-4 rounded-lg mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#994d51" viewBox="0 0 256 256" class="mx-auto">
+                  <path d="M176,16H80A24,24,0,0,0,56,40V216a24,24,0,0,0,24,24h96a24,24,0,0,0,24-24V40A24,24,0,0,0,176,16Zm8,200a8,8,0,0,1-8,8H80a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h96a8,8,0,0,1,8,8Z"></path>
+                </svg>
+              </div>
+              <h3 class="font-bold text-[#1b0e0e] mb-2">Mobile</h3>
+              <p class="text-sm text-gray-600">Diseño de una columna con navegación táctil</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</Layout>
