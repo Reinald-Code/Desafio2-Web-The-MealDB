@@ -1,9 +1,9 @@
-# 📖 Documentación Completa - RecetasDelMundo
+# 📖 Documentación Completa - Esencia Culinaria
 
 ## 🎯 Contexto del Proyecto
 
 ### Descripción General
-**RecetasDelMundo** es una aplicación web moderna desarrollada para explorar y descubrir recetas gastronómicas de diferentes países y culturas del mundo. La aplicación utiliza la API pública **TheMealDB** para proporcionar una base de datos extensa de recetas, categorías, ingredientes e instrucciones de preparación.
+**Esencia Culinaria** es una aplicación web moderna desarrollada para explorar y descubrir recetas gastronómicas de diferentes países y culturas del mundo. La aplicación utiliza la API pública **TheMealDB** para proporcionar una base de datos extensa de recetas, categorías, ingredientes e instrucciones de preparación.
 
 ### Objetivos del Proyecto
 1. **Crear una experiencia intuitiva** para descubrir nuevas recetas
@@ -27,6 +27,16 @@
 #### API Integration
 - **TheMealDB API** - Base de datos de recetas e información gastronómica
 - **Fetch API** - Cliente HTTP nativo para llamadas a la API
+
+#### Características de TheMealDB API
+- **Gratuita**: API pública sin necesidad de autenticación
+- **Amplia base de datos**: +300 recetas de diferentes culturas
+- **Información completa**: Ingredientes, medidas, instrucciones e imágenes
+- **Filtros múltiples**: Por categoría, país, ingrediente principal
+- **Datos estructurados**: Formato JSON consistente y bien documentado
+- **Imágenes de alta calidad**: URLs directas a imágenes de recetas
+- **Categorías**: 14 categorías principales (Beef, Chicken, Seafood, etc.)
+- **Países**: 25+ países representados en la base de datos
 
 #### Herramientas de Desarrollo
 - **Vite** - Bundler y servidor de desarrollo
@@ -237,7 +247,7 @@ GET https://www.themealdb.com/api/json/v1/1/list.php?c=list
 
 ## 📝 Conclusiones
 
-El proyecto **RecetasDelMundo** representa una implementación exitosa de tecnologías web modernas, demostrando:
+El proyecto **Esencia Culinaria** representa una implementación exitosa de tecnologías web modernas, demostrando:
 
 1. **Integración efectiva** con APIs externas
 2. **Diseño responsive** y accesible
