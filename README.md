@@ -1,8 +1,8 @@
-# 🍽️ RecetasDelMundo
+# 🍽️ Esencia Culinaria
 
 Una aplicación web moderna para explorar la gastronomía mundial, desarrollada con Astro, React y TypeScript.
 
-![RecetasDelMundo](https://img.shields.io/badge/Status-Completado-success)
+![Esencia Culinaria](https://img.shields.io/badge/Status-Completado-success)
 ![Tech Stack](https://img.shields.io/badge/Tech-Astro%20%7C%20React%20%7C%20TypeScript-blue)
 ![API](https://img.shields.io/badge/API-TheMealDB-orange)
 
@@ -190,4 +190,4 @@ Este es un proyecto académico. Para sugerencias o mejoras, por favor contacta a
 
 ---
 
-⭐ **¡Explora RecetasDelMundo y descubre la gastronomía mundial!** ⭐
+⭐ **¡Explora Esencia Culinaria y descubre la gastronomía mundial!** ⭐

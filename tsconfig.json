@@ -1,14 +1,21 @@
 {
+  // Configuración base estricta de TypeScript para Astro
   "extends": "astro/tsconfigs/strict",
+  
+  // Archivos que TypeScript debe incluir en la compilación
   "include": [
-    ".astro/types.d.ts",
-    "**/*"
+    ".astro/types.d.ts",  // Definiciones de tipos generadas por Astro
+    "**/*"               // Todos los archivos en el proyecto
   ],
+  
+  // Archivos y carpetas que TypeScript debe excluir
   "exclude": [
-    "dist"
+    "dist"               // Carpeta de build/distribución
   ],
+  
+  // Opciones específicas del compilador
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsx": "react-jsx",          // Usar nueva transformación JSX de React
+    "jsxImportSource": "react"   // Especificar React como fuente para JSX
   }
 }
