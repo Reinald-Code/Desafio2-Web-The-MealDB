@@ -1,7 +1,9 @@
 ---
+// Importamos el Layout base para mantener la consistencia en la estructura de la página
 import Layout from '../layouts/Layout.astro';
 
-// Lista estática de países como fallback
+// Definimos una lista estática de países como fallback
+// Esto nos asegura tener una lista de países incluso si la API no está disponible
 const staticCountries = [
   'American', 'British', 'Canadian', 'Chinese', 'Chile','Croatian', 'Dutch', 
   'Egyptian', 'Filipino', 'French', 'Greek', 'Indian', 'Irish', 
@@ -10,7 +12,8 @@ const staticCountries = [
   'Tunisian', 'Turkish', 'Ukrainian', 'Uruguayan', 'Vietnamese'
 ];
 
-// Traducciones de países al español
+// Objeto de traducciones para mostrar los nombres de los países en español
+// Mejora la experiencia de usuario para audiencia hispanohablante
 const countryTranslations: { [key: string]: string } = {
   'American': 'Estadounidense',
   'British': 'Británica',
@@ -44,7 +47,8 @@ const countryTranslations: { [key: string]: string } = {
   'Vietnamese': 'Vietnam'
 };
 
-// Función para obtener la bandera
+// Función que devuelve el emoji de la bandera correspondiente a cada país
+// Si no encuentra el país en la lista, devuelve un emoji genérico de comida
 function getFlag(country: string): string {
   const flags: { [key: string]: string } = {
     'American': '🇺🇸',
@@ -81,6 +85,8 @@ function getFlag(country: string): string {
   return flags[country] || '🍽️';
 }
 
+// Objeto que mapea países a URLs de sus banderas
+// Utiliza banderas de Wikimedia Commons para garantizar calidad y disponibilidad
 const countryFlags: { [key: string]: string } = {
   'American': 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg',
   'British': 'https://upload.wikimedia.org/wikipedia/commons/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg',
@@ -114,14 +120,20 @@ const countryFlags: { [key: string]: string } = {
   'Vietnamese': 'https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg'
 };
 
+// Función auxiliar que devuelve la URL de la imagen de la bandera para un país
+// Si no encuentra el país, devuelve una cadena vacía
 function getBackgroundImage(country: string): string {
   return countryFlags[country] || '';
 }
 ---
 
+<!-- Utilizamos el Layout con el título específico para la página de países -->
 <Layout title="Cocinas del Mundo - Recetas por País">
+  <!-- Contenedor principal con padding y centrado -->
   <div class="px-40 flex flex-1 justify-center py-5">
+    <!-- Contenedor del contenido con ancho máximo -->
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+      <!-- Título y subtítulo de la página -->
       <h2 class="text-[#1b0e0e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
         Cocinas del Mundo
       </h2>
@@ -129,27 +141,36 @@ function getBackgroundImage(country: string): string {
         Explora las deliciosas recetas tradicionales de diferentes países
       </p>
 
+      <!-- Grid responsivo de tarjetas de países -->
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 p-4">
+        {/* Iteramos sobre la lista de países para crear sus tarjetas */}
         {staticCountries.map((country) => (
+          // Enlace a la página específica del país
           <a 
             href={`/country/${country.toLowerCase()}`}
             class="flex flex-col gap-3 pb-3 group w-full max-w-[220px] justify-self-center"
           >
+            {/* Contenedor de la bandera con efectos hover */}
             <div class="relative w-full bg-[#f3e7e8] aspect-square rounded-lg overflow-hidden group-hover:shadow-lg transition-all duration-300">
+              {/* Imagen de la bandera con fallback a emoji */}
               <img 
                 src={getBackgroundImage(country)}
                 alt={`Bandera de ${countryTranslations[country] || country}`}
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
               />
+              {/* Emoji de la bandera como fallback */}
               <div class="absolute inset-0 hidden items-center justify-center text-[72px] transform group-hover:scale-110 transition-transform duration-300">
                 {getFlag(country)}
               </div>
             </div>
+            {/* Información del país */}
             <div class="text-center">
+              {/* Nombre del país traducido */}
               <p class="text-[#1b0e0e] text-base font-medium leading-normal group-hover:text-[#994d51] transition-colors">
                 {countryTranslations[country] || country}
               </p>
+              {/* Texto descriptivo */}
               <p class="text-[#994d51] text-sm font-normal leading-normal">
                 Cocina {countryTranslations[country] || country}
               </p>

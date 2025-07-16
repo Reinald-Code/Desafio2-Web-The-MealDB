@@ -1,17 +1,21 @@
 // src/components/SearchBar.jsx
+// Importamos los hooks necesarios de React
 import React, { useState, useEffect, useRef } from 'react';
 
 export default function SearchBar() {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showResults, setShowResults] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+  // Estados para manejar la búsqueda y resultados
+  const [query, setQuery] = useState('');              // Texto de búsqueda
+  const [results, setResults] = useState([]);          // Resultados de la búsqueda
+  const [isLoading, setIsLoading] = useState(false);   // Estado de carga
+  const [showResults, setShowResults] = useState(false); // Mostrar/ocultar resultados
+  const [isTyping, setIsTyping] = useState(false);     // Usuario está escribiendo
+  const [selectedIndex, setSelectedIndex] = useState(-1); // Índice seleccionado con teclado
+  
+  // Referencias para el debounce y el contenedor de búsqueda
   const debounceTimer = useRef(null);
   const searchRef = useRef(null);
 
-  // Función para hacer búsqueda en la API
+  // Función para buscar recetas en la API
   const searchMeals = async (searchQuery) => {
     if (!searchQuery.trim()) {
       setResults([]);
@@ -21,6 +25,7 @@ export default function SearchBar() {
 
     setIsLoading(true);
     try {
+      // Llamada a la API de MealDB
       const response = await fetch(
         `https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(searchQuery)}`
       );
@@ -35,12 +40,14 @@ export default function SearchBar() {
     }
   };
 
-  // Efecto para búsqueda con debounce
+  // Efecto para implementar debounce en la búsqueda
   useEffect(() => {
+    // Limpiamos el timer anterior si existe
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
     }
 
+    // Si el usuario está escribiendo y hay texto, iniciamos la búsqueda
     if (isTyping && query.trim()) {
       debounceTimer.current = setTimeout(() => {
         searchMeals(query);
@@ -51,6 +58,7 @@ export default function SearchBar() {
       setShowResults(false);
     }
 
+    // Limpieza del efecto
     return () => {
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
@@ -58,7 +66,7 @@ export default function SearchBar() {
     };
   }, [query, isTyping]);
 
-  // Cerrar resultados cuando se hace clic fuera
+  // Efecto para cerrar resultados al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -70,13 +78,15 @@ export default function SearchBar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Función para resaltar términos de búsqueda
+  // Función para resaltar el texto buscado en los resultados
   const highlightMatch = (text, query) => {
     if (!query.trim()) return text;
     
+    // Creamos una regex para buscar el texto ignorando mayúsculas/minúsculas
     const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
     const parts = text.split(regex);
     
+    // Marcamos las coincidencias con un fondo amarillo
     return parts.map((part, index) => {
       if (part.toLowerCase() === query.toLowerCase()) {
         return <mark key={index} className="bg-yellow-200 text-gray-900">{part}</mark>;
@@ -85,13 +95,15 @@ export default function SearchBar() {
     });
   };
 
+  // Manejador de cambios en el input
   const handleInputChange = (e) => {
     const value = e.target.value;
     setQuery(value);
     setIsTyping(true);
-    setSelectedIndex(-1); // Reset selected index when typing
+    setSelectedIndex(-1); // Reseteamos el índice seleccionado al escribir
   };
 
+  // Manejador de eventos de teclado para navegación
   const handleKeyDown = (e) => {
     if (!showResults || results.length === 0) {
       if (e.key === 'Enter') {

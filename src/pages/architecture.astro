@@ -1,11 +1,17 @@
 ---
+// Importamos el componente Layout que proporciona la estructura base
 import Layout from '../layouts/Layout.astro';
 ---
 
+<!-- Utilizamos el Layout con título específico para la página de arquitectura -->
 <Layout title="Arquitectura del Sistema - Esencia Culinaria">
+  <!-- Contenedor principal con padding y centrado -->
   <div class="px-40 flex flex-1 justify-center py-5">
+    <!-- Contenedor del contenido con ancho máximo -->
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+      <!-- Encabezado con botón de retorno -->
       <div class="flex items-center gap-4 px-4 py-3">
+        <!-- Botón para volver a la página principal -->
         <a href="/" class="flex items-center justify-center rounded-lg bg-[#f3e7e8] p-2 text-[#994d51] hover:bg-[#fadcdc] transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
             <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
@@ -14,12 +20,13 @@ import Layout from '../layouts/Layout.astro';
         <h1 class="text-2xl font-bold text-[#1b0e0e]">Arquitectura del Sistema</h1>
       </div>
 
-      <!-- Diagrama Principal -->
+      <!-- Sección del Diagrama Principal -->
       <section class="px-4 py-6">
         <h2 class="text-xl font-bold text-[#1b0e0e] mb-6">Diagrama de Arquitectura</h2>
         
+        <!-- Contenedor principal del diagrama -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-          <!-- Frontend Layer -->
+          <!-- Capa Frontend -->
           <div class="mb-8">
             <h3 class="text-lg font-semibold text-[#994d51] mb-4 flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
@@ -27,6 +34,7 @@ import Layout from '../layouts/Layout.astro';
               </svg>
               Capa de Presentación (Frontend)
             </h3>
+            <!-- Grid de tecnologías frontend -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div class="bg-[#f3e7e8] p-4 rounded-lg border-l-4 border-[#994d51]">
                 <h4 class="font-bold text-[#1b0e0e] mb-2">Astro Framework</h4>
@@ -43,7 +51,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
           </div>
 
-          <!-- Routing Layer -->
+          <!-- Capa de Enrutamiento -->
           <div class="mb-8">
             <h3 class="text-lg font-semibold text-[#994d51] mb-4 flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
@@ -51,6 +59,7 @@ import Layout from '../layouts/Layout.astro';
               </svg>
               Capa de Enrutamiento
             </h3>
+            <!-- Grid de rutas disponibles -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div class="bg-blue-50 p-3 rounded text-center border border-blue-200">
                 <div class="font-semibold text-blue-800">/</div>
@@ -87,7 +96,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
           </div>
 
-          <!-- API Layer -->
+          <!-- Capa de API -->
           <div class="mb-8">
             <h3 class="text-lg font-semibold text-[#994d51] mb-4 flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
@@ -96,11 +105,13 @@ import Layout from '../layouts/Layout.astro';
               </svg>
               Capa de Integración API
             </h3>
+            <!-- Documentación de endpoints de TheMealDB -->
             <div class="bg-green-50 p-4 rounded-lg border border-green-200">
               <div class="text-center mb-4">
                 <h4 class="font-bold text-green-800">TheMealDB API</h4>
                 <p class="text-sm text-green-600">https://www.themealdb.com/api/json/v1/1/</p>
               </div>
+              <!-- Grid de endpoints disponibles -->
               <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div class="bg-white p-3 rounded border">
                   <h5 class="font-semibold text-green-800">Search</h5>
@@ -136,7 +147,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
           </div>
 
-          <!-- Data Flow -->
+          <!-- Flujo de Datos -->
           <div>
             <h3 class="text-lg font-semibold text-[#994d51] mb-4 flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
@@ -144,6 +155,7 @@ import Layout from '../layouts/Layout.astro';
               </svg>
               Flujo de Datos
             </h3>
+            <!-- Diagrama de flujo de datos -->
             <div class="flex flex-col md:flex-row items-center justify-between gap-4">
               <div class="bg-purple-50 p-4 rounded-lg border border-purple-200 flex-1">
                 <h4 class="font-bold text-purple-800 mb-2">1. Usuario Interactúa</h4>
@@ -169,11 +181,13 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </section>
 
-      <!-- Características Técnicas -->
+      <!-- Sección de Características Técnicas -->
       <section class="px-4 py-6">
         <h2 class="text-xl font-bold text-[#1b0e0e] mb-6">Características Técnicas</h2>
         
+        <!-- Grid de características técnicas -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Tecnologías Frontend -->
           <div class="bg-white rounded-lg shadow-md p-6">
             <h3 class="text-lg font-semibold text-[#994d51] mb-4">Frontend Technologies</h3>
             <ul class="space-y-3">
@@ -196,6 +210,7 @@ import Layout from '../layouts/Layout.astro';
             </ul>
           </div>
 
+          <!-- Funcionalidades Clave -->
           <div class="bg-white rounded-lg shadow-md p-6">
             <h3 class="text-lg font-semibold text-[#994d51] mb-4">Funcionalidades Clave</h3>
             <ul class="space-y-3">
@@ -220,12 +235,15 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </section>
 
-      <!-- Responsive Design -->
+      <!-- Sección de Diseño Responsive -->
       <section class="px-4 py-6">
         <h2 class="text-xl font-bold text-[#1b0e0e] mb-6">Diseño Responsive</h2>
         
+        <!-- Tarjeta de diseño responsive -->
         <div class="bg-white rounded-lg shadow-md p-6">
+          <!-- Grid de dispositivos soportados -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Desktop -->
             <div class="text-center">
               <div class="bg-[#f3e7e8] p-4 rounded-lg mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#994d51" viewBox="0 0 256 256" class="mx-auto">
@@ -236,6 +254,7 @@ import Layout from '../layouts/Layout.astro';
               <p class="text-sm text-gray-600">Diseño completo con sidebar y múltiples columnas</p>
             </div>
             
+            <!-- Tablet -->
             <div class="text-center">
               <div class="bg-[#f3e7e8] p-4 rounded-lg mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#994d51" viewBox="0 0 256 256" class="mx-auto">
@@ -246,6 +265,7 @@ import Layout from '../layouts/Layout.astro';
               <p class="text-sm text-gray-600">Adaptación de grillas y espaciado optimizado</p>
             </div>
             
+            <!-- Mobile -->
             <div class="text-center">
               <div class="bg-[#f3e7e8] p-4 rounded-lg mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#994d51" viewBox="0 0 256 256" class="mx-auto">

@@ -1,10 +1,11 @@
 ---
+// Importamos el componente Layout para mantener la estructura consistente del sitio
 import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Equipo de Desarrollo - Esencia Culinaria">
   <main class="min-h-screen bg-white">
-    <!-- Hero Section -->
+    <!-- Sección Hero - Encabezado principal con fondo degradado -->
     <section class="bg-gradient-to-r from-[#994d51] to-[#b85c5f] text-white py-16">
       <div class="max-w-6xl mx-auto px-6 text-center">
         <h1 class="text-4xl font-bold mb-4">Nuestro Equipo de Desarrollo</h1>
@@ -12,7 +13,7 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </section>
 
-    <!-- Team Members Section -->
+    <!-- Sección de Miembros del Equipo - Grid de tarjetas de desarrolladores -->
     <section class="py-16">
       <div class="max-w-6xl mx-auto px-6">
         <div class="text-center mb-12">
@@ -20,8 +21,9 @@ import Layout from '../layouts/Layout.astro';
           <p class="text-lg text-gray-600">Un grupo apasionado de desarrolladores dedicados a crear experiencias culinarias excepcionales</p>
         </div>
 
+        <!-- Grid de tarjetas de miembros del equipo -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <!-- Team Member 1 - Max Rojas -->
+          <!-- Tarjeta de Max Rojas - Diseñador y Director Creativo -->
           <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
             <div class="w-24 h-24 bg-gradient-to-br from-[#994d51] to-[#b85c5f] rounded-full mx-auto mb-4 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="white" viewBox="0 0 256 256">
@@ -30,10 +32,10 @@ import Layout from '../layouts/Layout.astro';
             </div>
             <h3 class="text-xl font-bold text-[#1b0e0e] mb-2">Max Rojas</h3>
             <p class="text-[#994d51] font-medium mb-3">El Que Diseña y Pide que lo Hagan Bien</p>
-            <p class="text-gray-600 text-sm"> La "visión creativa" del equipo, que se asegura de que la idea original se mantenga y se vea bien en la web final.</p>
+            <p class="text-gray-600 text-sm">La "visión creativa" del equipo, que se asegura de que la idea original se mantenga y se vea bien en la web final.</p>
           </div>
 
-          <!-- Team Member 2 - Vicente Saa -->
+          <!-- Tarjeta de Vicente Saa - Desarrollador de Infraestructura -->
           <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
             <div class="w-24 h-24 bg-gradient-to-br from-[#994d51] to-[#b85c5f] rounded-full mx-auto mb-4 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="white" viewBox="0 0 256 256">
@@ -45,7 +47,7 @@ import Layout from '../layouts/Layout.astro';
             <p class="text-gray-600 text-sm">Se encarga de que el entorno de trabajo esté listo y que el proyecto sea fácil de poner en marcha para todos.</p>
           </div>
 
-          <!-- Team Member 3 - Vicente García -->
+          <!-- Tarjeta de Vicente García - Desarrollador Frontend -->
           <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
             <div class="w-24 h-24 bg-gradient-to-br from-[#994d51] to-[#b85c5f] rounded-full mx-auto mb-4 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="white" viewBox="0 0 256 256">
@@ -57,7 +59,7 @@ import Layout from '../layouts/Layout.astro';
             <p class="text-gray-600 text-sm">Se asegura de que la página no solo funcione, sino que también sea un placer mirarla y usarla.</p>
           </div>
 
-          <!-- Team Member 4 - Cristóbal Cabrera -->
+          <!-- Tarjeta de Cristóbal Cabrera - Control de Calidad -->
           <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
             <div class="w-24 h-24 bg-gradient-to-br from-[#994d51] to-[#b85c5f] rounded-full mx-auto mb-4 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="white" viewBox="0 0 256 256">
@@ -68,7 +70,8 @@ import Layout from '../layouts/Layout.astro';
             <p class="text-[#994d51] font-medium mb-3">El Censor de Errores.</p>
             <p class="text-gray-600 text-sm">Se asegura de que todo funcione correctamente y no haya errores molestos.</p>
           </div>
-          <!-- Team Member 5 - Desconocido -->
+
+          <!-- Tarjeta del Miembro Misterioso - Elemento humorístico -->
           <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300 md:col-span-2 lg:col-span-4 max-w-sm mx-auto">
             <div class="w-24 h-24 bg-gradient-to-br from-[#994d51] to-[#b85c5f] rounded-full mx-auto mb-4 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="white" viewBox="0 0 256 256">
@@ -83,7 +86,7 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </section>
 
-    <!-- Project Info Section -->
+    <!-- Sección de Información del Proyecto -->
     <section class="bg-[#f3e7e8] py-16">
       <div class="max-w-6xl mx-auto px-6">
         <div class="text-center mb-12">
@@ -91,7 +94,9 @@ import Layout from '../layouts/Layout.astro';
           <p class="text-lg text-gray-600">RecetasDelMundo - Una aplicación web moderna para explorar la gastronomía mundial</p>
         </div>
 
+        <!-- Grid de características y tecnologías -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Lista de tecnologías utilizadas -->
           <div class="bg-white rounded-xl p-6 shadow-md">
             <h3 class="text-xl font-bold text-[#1b0e0e] mb-4">Tecnologías Utilizadas</h3>
             <ul class="space-y-2 text-gray-600">
@@ -114,6 +119,7 @@ import Layout from '../layouts/Layout.astro';
             </ul>
           </div>
 
+          <!-- Lista de características del proyecto -->
           <div class="bg-white rounded-xl p-6 shadow-md">
             <h3 class="text-xl font-bold text-[#1b0e0e] mb-4">Características del Proyecto</h3>
             <ul class="space-y-2 text-gray-600">
@@ -139,12 +145,13 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Sección de Contacto -->
     <section class="py-16">
       <div class="max-w-4xl mx-auto px-6 text-center">
         <h2 class="text-3xl font-bold text-[#1b0e0e] mb-4">¿Quieres Contactarnos?</h2>
         <p class="text-lg text-gray-600 mb-8">Estamos siempre abiertos a nuevas ideas y colaboraciones</p>
         
+        <!-- Tarjeta de contacto con email -->
         <div class="flex justify-center gap-8">
           <div class="bg-[#f3e7e8] rounded-lg p-6 text-center">
             <div class="w-12 h-12 bg-[#994d51] rounded-full mx-auto mb-3 flex items-center justify-center">
@@ -152,13 +159,11 @@ import Layout from '../layouts/Layout.astro';
                 <path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z"></path>
               </svg>
             </div>
-                <h 3 class="font-bold text-[#1b0e0e] mb-1">Email</h3>
-              <p class="text-gray-600 text-sm">cfmvrecetas@gmail.com</p>
-            </div>
+            <h3 class="font-bold text-[#1b0e0e] mb-1">Email</h3>
+            <p class="text-gray-600 text-sm">cfmvrecetas@gmail.com</p>
           </div>
         </div>
       </div>
-    </div>
     </section>
   </main>
 </Layout>

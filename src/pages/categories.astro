@@ -1,12 +1,14 @@
 ---
+// Importamos el Layout base para mantener la consistencia en la estructura de la página
 import Layout from '../layouts/Layout.astro';
 
-// Obtenemos todas las categorías disponibles
+// Realizamos una petición a la API para obtener la lista de todas las categorías disponibles
 const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
 const data = await response.json();
 const categories = data.meals;
 
-// Traducciones de categorías al español
+// Definimos un objeto de traducción para mostrar las categorías en español
+// Esto mejora la experiencia de usuario para audiencia hispanohablante
 const categoryTranslations: { [key: string]: string } = {
   'Beef': 'Carne de Res',
   'Chicken': 'Pollo',
@@ -25,20 +27,29 @@ const categoryTranslations: { [key: string]: string } = {
 };
 ---
 
+<!-- Utilizamos el Layout con el título específico para la página de categorías -->
 <Layout title="Categorías de Recetas">
+  <!-- Contenedor principal con padding y centrado -->
   <div class="px-40 flex flex-1 justify-center py-5">
+    <!-- Contenedor del contenido con ancho máximo -->
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+      <!-- Encabezado de la página -->
       <div class="flex flex-wrap justify-between gap-3 p-4">
         <p class="text-[#1b0e0e] tracking-light text-[32px] font-bold leading-tight min-w-72">Categorías</p>
       </div>
       
+      <!-- Grid responsivo de tarjetas de categorías -->
       <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+        {/* Iteramos sobre cada categoría para crear su tarjeta */}
         {categories.map((category: { strCategory: string }) => (
+          // Enlace a la página de la categoría específica
           <a 
             href={`/category/${category.strCategory.toLowerCase()}`}
             class="flex flex-1 gap-3 rounded-lg border border-[#e7d0d1] bg-[#fcf8f8] p-4 items-center hover:bg-[#f3e7e8] transition-colors group"
           >
+            {/* Contenedor del emoji que representa la categoría */}
             <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg w-10 shrink-0 text-2xl flex items-center justify-center bg-[#f3e7e8]">
+              {/* Asignación condicional de emojis según la categoría */}
               {category.strCategory === 'Beef' && '🥩'}
               {category.strCategory === 'Chicken' && '🍗'}
               {category.strCategory === 'Dessert' && '🍰'}
@@ -53,8 +64,10 @@ const categoryTranslations: { [key: string]: string } = {
               {category.strCategory === 'Vegetarian' && '🥬'}
               {category.strCategory === 'Breakfast' && '🍳'}
               {category.strCategory === 'Goat' && '🐐'}
+              {/* Emoji por defecto para categorías no listadas */}
               {!['Beef', 'Chicken', 'Dessert', 'Lamb', 'Miscellaneous', 'Pasta', 'Pork', 'Seafood', 'Side', 'Starter', 'Vegan', 'Vegetarian', 'Breakfast', 'Goat'].includes(category.strCategory) && '🍽️'}
             </div>
+            {/* Nombre de la categoría traducido o en su idioma original */}
             <h2 class="text-[#1b0e0e] text-base font-bold leading-tight group-hover:text-[#994d51] transition-colors">
               {categoryTranslations[category.strCategory] || category.strCategory}
             </h2>

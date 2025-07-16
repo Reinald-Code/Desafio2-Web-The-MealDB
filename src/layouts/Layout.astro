@@ -1,10 +1,15 @@
 ---
+// Importamos el componente Header que contiene la navegación principal
 import Header from '../components/Header.astro';
+// Importamos los estilos globales de la aplicación
 import '../styles/global.css';
+
+// Definimos la interfaz Props que especifica las propiedades que puede recibir este componente
 interface Props {
-  title: string;
+  title: string; // Título de la página
 }
 
+// Extraemos el título de las propiedades pasadas al componente
 const { title } = Astro.props;
 ---
 
@@ -16,11 +21,17 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <!-- Título dinámico: si se proporciona un título, se muestra "Título - Esencia Culinaria", 
+         si no, se muestra el título por defecto -->
     <title>{title ? `${title} - Esencia Culinaria` : 'Esencia Culinaria - Descubre la gastronomía mundial'}</title>
   </head>
+  <!-- El cuerpo usa flexbox para ocupar toda la altura de la pantalla -->
   <body class="min-h-screen flex flex-col">
+    <!-- Incluimos el componente Header en todas las páginas -->
     <Header />
+    <!-- El main también usa flexbox y ocupa el espacio restante -->
     <main class="flex-1 flex flex-col">
+      <!-- El slot permite insertar el contenido de cada página -->
       <slot />
     </main>
   </body>
