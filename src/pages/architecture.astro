@@ -106,13 +106,15 @@ import Layout from '../layouts/Layout.astro';
               Capa de Integración API
             </h3>
             <!-- Documentación de endpoints de TheMealDB -->
-            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+            <div class="bg-green-50 p-4 rounded-lg border border-green-200 mb-4">
               <div class="text-center mb-4">
                 <h4 class="font-bold text-green-800">TheMealDB API</h4>
                 <p class="text-sm text-green-600">https://www.themealdb.com/api/json/v1/1/</p>
+                <p class="text-xs text-gray-600 mt-1">Base de datos pública gratuita • Sin autenticación requerida</p>
               </div>
+              
               <!-- Grid de endpoints disponibles -->
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
                 <div class="bg-white p-3 rounded border">
                   <h5 class="font-semibold text-green-800">Search</h5>
                   <p class="text-xs text-green-600">search.php?s=...</p>
@@ -144,6 +146,49 @@ import Layout from '../layouts/Layout.astro';
                   <p class="text-xs">Lista de países</p>
                 </div>
               </div>
+              
+              <!-- Información técnica adicional -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-3 rounded border-l-4 border-green-500">
+                  <h6 class="font-semibold text-green-800 mb-2">Características Técnicas</h6>
+                  <ul class="text-xs space-y-1">
+                    <li>• <strong>Formato:</strong> JSON estructurado</li>
+                    <li>• <strong>Rate Limit:</strong> Sin límites conocidos</li>
+                    <li>• <strong>Latencia:</strong> ~200-500ms promedio</li>
+                    <li>• <strong>Disponibilidad:</strong> 99.9% uptime</li>
+                  </ul>
+                </div>
+                <div class="bg-white p-3 rounded border-l-4 border-blue-500">
+                  <h6 class="font-semibold text-blue-800 mb-2">Datos Disponibles</h6>
+                  <ul class="text-xs space-y-1">
+                    <li>• <strong>Base de datos:</strong> +300 recetas</li>
+                    <li>• <strong>Categorías:</strong> 14 principales</li>
+                    <li>• <strong>Países:</strong> 25+ representados</li>
+                    <li>• <strong>Imágenes:</strong> URLs de alta calidad</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Ejemplo de respuesta de API -->
+            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <h5 class="font-semibold text-gray-800 mb-2">Ejemplo de Respuesta JSON</h5>
+              <pre class="text-xs bg-gray-800 text-green-400 p-3 rounded overflow-x-auto">
+{`{
+  "meals": [
+    {
+      "idMeal": "52768",
+      "strMeal": "Apple Frangipan Tart",
+      "strCategory": "Dessert",
+      "strArea": "British",
+      "strInstructions": "Preheat the oven to 200C/180C...",
+      "strMealThumb": "https://www.themealdb.com/images/...",
+      "strIngredient1": "digestive biscuits",
+      "strMeasure1": "175g",
+      "strYoutube": "https://www.youtube.com/watch?v=..."
+    }
+  ]
+}`}</pre>
             </div>
           </div>
 
