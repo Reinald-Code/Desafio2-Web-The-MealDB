@@ -1,8 +1,9 @@
 ---
-// Importamos los componentes necesarios para construir la página
+// src/pages/index.astro
+// Página principal que muestra recetas aleatorias destacadas
 import Layout from '../layouts/Layout.astro';
 
-// Definimos las interfaces TypeScript para manejar los datos de las recetas
+// Definir interfaces TypeScript para el tipado de datos
 interface Meal {
   idMeal: string;           // Identificador único de la receta
   strMeal: string;          // Nombre de la receta
@@ -10,22 +11,28 @@ interface Meal {
   strInstructions?: string; // Instrucciones de preparación (opcional)
 }
 
+// Función para obtener una receta aleatoria desde la API
 const getRandomMeal = async () => {
   try {
+    // Hacer petición a la API para obtener receta aleatoria
     const response = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
     
+    // Verificar que la respuesta sea exitosa
     if (!response.ok) {
       console.error(`Error HTTP: ${response.status}`);
       return null;
     }
     
+    // Parsear respuesta JSON
     const data = await response.json();
     
+    // Validar estructura de datos
     if (!data?.meals?.[0]) {
       console.error('Estructura de datos inesperada:', data);
       return null;
     }
     
+    // Retornar la receta con tipado TypeScript
     return data.meals[0] as Meal;
   } catch (error) {
     if (error instanceof Error) {
@@ -35,19 +42,22 @@ const getRandomMeal = async () => {
   }
 };
 
+// Función para obtener múltiples recetas únicas (evitar duplicados)
 const getUniqueMeals = async (count: number) => {
-  const meals = [] as Meal[];
-  const seenIds = new Set<string>();
-  let attempts = 0;
-  const maxAttempts = count * 3;
+  const meals = [] as Meal[];          // Array para almacenar recetas únicas
+  const seenIds = new Set<string>();   // Set para rastrear IDs ya vistos
+  let attempts = 0;                    // Contador de intentos
+  const maxAttempts = count * 3;       // Límite máximo de intentos
   
+  // Bucle para obtener recetas hasta alcanzar el count deseado
   while (meals.length < count && attempts < maxAttempts) {
     attempts++;
     const meal = await getRandomMeal();
     
+    // Verificar que la receta existe y no está duplicada
     if (meal && !seenIds.has(meal.idMeal)) {
-      seenIds.add(meal.idMeal);
-      meals.push(meal);
+      seenIds.add(meal.idMeal);      // Marcar ID como visto
+      meals.push(meal);              // Agregar receta al array
     }
   }
   

@@ -1,16 +1,22 @@
 // astro.config.mjs
+// Archivo de configuración principal de Astro
 import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
+import react from '@astrojs/react';        // Integración para usar React
+import tailwindcss from '@tailwindcss/vite'; // Plugin de Tailwind CSS
 
-import tailwindcss from '@tailwindcss/vite';
-
-// https://astro.build/config
+// Documentación oficial: https://astro.build/config
 export default defineConfig({
-  output: 'server',
-  // Dejamos solo react() por ahora
-  integrations: [react()],
+  output: 'server',              // Configuración para SSR (Server-Side Rendering)
+  
+  // Integraciones habilitadas
+  integrations: [
+    react()                      // Habilita componentes React (.jsx)
+  ],
 
+  // Configuración de Vite (bundler subyacente)
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [
+      tailwindcss()              // Plugin para procesar Tailwind CSS
+    ]
   }
 });

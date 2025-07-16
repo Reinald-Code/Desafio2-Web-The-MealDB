@@ -1,50 +1,67 @@
 ---
+// src/pages/meal/[id].astro
+// Página dinámica para mostrar detalles de una receta específica
 import Layout from '../../layouts/Layout.astro';
 
+// Obtener el parámetro ID de la URL dinámica
 const { id } = Astro.params;
 
-// Verificamos que el ID exista
+// Verificar que el ID exista, sino redirigir al inicio
 if (!id) {
   return Astro.redirect('/');
 }
 
+// Variables para almacenar la receta y posibles errores
 let meal: any = null;
 let error = '';
 
 try {
+  // Hacer petición a la API para obtener receta específica por ID
   const response = await fetch(
     `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
   );
+  
+  // Verificar que la respuesta sea exitosa
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
-  const data = await response.json();
-  meal = data.meals?.[0];
   
+  // Parsear respuesta JSON
+  const data = await response.json();
+  meal = data.meals?.[0];  // Obtener primer elemento del array
+  
+  // Verificar que la receta existe
   if (!meal) {
     throw new Error('Receta no encontrada');
   }
 } catch (e) {
+  // Manejar errores y mostrar mensaje apropiado
   error = `Error al cargar la receta: ${e instanceof Error ? e.message : 'Error desconocido'}`;
   console.error('Error fetching meal:', e);
 }
 
-// La API devuelve hasta 20 ingredientes y medidas en campos separados.
-// Esta función los une en una sola lista.
+// Procesar ingredientes y medidas desde la API
+// La API devuelve hasta 20 ingredientes y medidas en campos separados (strIngredient1, strMeasure1, etc.)
+// Esta función los une en una sola lista legible
 const ingredients: string[] = [];
 if (meal) {
   for (let i = 1; i <= 20; i++) {
+    // Verificar que el ingrediente existe y no está vacío
     if (meal[`strIngredient${i}`] && meal[`strIngredient${i}`].trim()) {
       const ingredient = meal[`strIngredient${i}`].trim();
       const measure = meal[`strMeasure${i}`]?.trim() || '';
+      
+      // Combinar medida e ingrediente o solo ingrediente si no hay medida
       ingredients.push(measure ? `${measure} ${ingredient}` : ingredient);
     }
   }
 }
 
-// Función para extraer el ID del video de YouTube
+// Función utilitaria para extraer ID de video de YouTube desde URL
 function getYouTubeVideoId(url: string): string | null {
   if (!url) return null;
+  
+  // Regex para extraer ID de diferentes formatos de URL de YouTube
   const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
   return match ? match[1] : null;
 }

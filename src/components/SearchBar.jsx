@@ -1,82 +1,99 @@
 // src/components/SearchBar.jsx
+// Componente de barra de búsqueda con funcionalidad de búsqueda instantánea
 import React, { useState, useEffect, useRef } from 'react';
 
 export default function SearchBar() {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showResults, setShowResults] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(-1);
-  const debounceTimer = useRef(null);
-  const searchRef = useRef(null);
+  // Estados para manejar la búsqueda y los resultados
+  const [query, setQuery] = useState(''); // Texto de búsqueda actual
+  const [results, setResults] = useState([]); // Resultados de la búsqueda
+  const [isLoading, setIsLoading] = useState(false); // Estado de carga
+  const [showResults, setShowResults] = useState(false); // Mostrar/ocultar resultados
+  const [isTyping, setIsTyping] = useState(false); // Detectar si el usuario está escribiendo
+  const [selectedIndex, setSelectedIndex] = useState(-1); // Índice del resultado seleccionado
+  
+  // Referencias para controlar el debounce y el componente
+  const debounceTimer = useRef(null); // Timer para implementar debounce
+  const searchRef = useRef(null); // Referencia al contenedor de búsqueda
 
-  // Función para hacer búsqueda en la API
+  // Función asíncrona para realizar búsqueda en la API de TheMealDB
   const searchMeals = async (searchQuery) => {
+    // Validar que el query no esté vacío
     if (!searchQuery.trim()) {
       setResults([]);
       setShowResults(false);
       return;
     }
 
-    setIsLoading(true);
+    setIsLoading(true); // Activar estado de carga
     try {
+      // Hacer petición a la API con el término de búsqueda
       const response = await fetch(
         `https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(searchQuery)}`
       );
       const data = await response.json();
+      
+      // Actualizar resultados (usar array vacío si no hay resultados)
       setResults(data.meals || []);
-      setShowResults(true);
+      setShowResults(true); // Mostrar panel de resultados
     } catch (error) {
       console.error('Error al buscar recetas:', error);
-      setResults([]);
+      setResults([]); // Limpiar resultados en caso de error
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Desactivar estado de carga
     }
   };
 
-  // Efecto para búsqueda con debounce
+  // Efecto para implementar búsqueda con debounce (evita múltiples peticiones)
   useEffect(() => {
+    // Limpiar el timer anterior si existe
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
     }
 
+    // Si el usuario está escribiendo y hay contenido, crear nuevo timer
     if (isTyping && query.trim()) {
       debounceTimer.current = setTimeout(() => {
-        searchMeals(query);
-        setIsTyping(false);
-      }, 300); // Espera 300ms después de que el usuario deje de escribir
+        searchMeals(query); // Ejecutar búsqueda después de 300ms
+        setIsTyping(false); // Resetear estado de escritura
+      }, 300); // Tiempo de espera: 300ms
     } else if (!query.trim()) {
-      setResults([]);
-      setShowResults(false);
+      setResults([]); // Limpiar resultados si no hay query
+      setShowResults(false); // Ocultar panel de resultados
     }
 
+    // Cleanup function para limpiar el timer al desmontar el componente
     return () => {
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
       }
     };
-  }, [query, isTyping]);
+  }, [query, isTyping]); // Dependencias del efecto
 
-  // Cerrar resultados cuando se hace clic fuera
+  // Efecto para cerrar resultados cuando se hace clic fuera del componente
   useEffect(() => {
     const handleClickOutside = (event) => {
+      // Verificar si el clic fue fuera del componente de búsqueda
       if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setShowResults(false);
+        setShowResults(false); // Ocultar resultados
       }
     };
 
+    // Agregar listener para detectar clics
     document.addEventListener('mousedown', handleClickOutside);
+    
+    // Cleanup: remover listener al desmontar
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Función para resaltar términos de búsqueda
+  // Función para resaltar términos de búsqueda en los resultados
   const highlightMatch = (text, query) => {
-    if (!query.trim()) return text;
+    if (!query.trim()) return text; // Si no hay query, devolver texto normal
     
+    // Crear regex para buscar coincidencias (escape de caracteres especiales)
     const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-    const parts = text.split(regex);
+    const parts = text.split(regex); // Dividir texto en partes
     
+    // Mapear partes y resaltar coincidencias
     return parts.map((part, index) => {
       if (part.toLowerCase() === query.toLowerCase()) {
         return <mark key={index} className="bg-yellow-200 text-gray-900">{part}</mark>;
@@ -85,9 +102,10 @@ export default function SearchBar() {
     });
   };
 
+  // Manejador para cambios en el input de búsqueda
   const handleInputChange = (e) => {
     const value = e.target.value;
-    setQuery(value);
+    setQuery(value); // Actualizar el query
     setIsTyping(true);
     setSelectedIndex(-1); // Reset selected index when typing
   };

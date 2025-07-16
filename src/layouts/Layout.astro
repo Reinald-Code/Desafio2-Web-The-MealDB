@@ -1,27 +1,42 @@
 ---
+// src/layouts/Layout.astro
+// Layout principal que envuelve todas las páginas del sitio
 import Header from '../components/Header.astro';
 import '../styles/global.css';
+
+// Definir la interfaz para las props del componente
 interface Props {
-  title: string;
+  title: string; // Título específico de cada página
 }
 
+// Extraer el título de las props
 const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es"> <!-- Idioma del sitio en español -->
   <head>
+    <!-- Metadatos básicos -->
     <meta charset="UTF-8" />
     <meta name="description" content="Descubre la riqueza de la gastronomía mundial" />
     <meta name="viewport" content="width=device-width" />
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- Generador de Astro -->
     <meta name="generator" content={Astro.generator} />
+    
+    <!-- Título dinámico basado en la página actual -->
     <title>{title ? `${title} - Esencia Culinaria` : 'Esencia Culinaria - Descubre la gastronomía mundial'}</title>
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="min-h-screen flex flex-col"> <!-- Layout flexbox de altura completa -->
+    <!-- Header común para todas las páginas -->
     <Header />
+    
+    <!-- Contenido principal que cambia según la página -->
     <main class="flex-1 flex flex-col">
-      <slot />
+      <slot /> <!-- Aquí se inserta el contenido específico de cada página -->
     </main>
   </body>
 </html>
