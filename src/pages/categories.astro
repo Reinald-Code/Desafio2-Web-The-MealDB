@@ -42,31 +42,13 @@ const categoryTranslations: { [key: string]: string } = {
       <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
         {/* Iteramos sobre cada categoría para crear su tarjeta */}
         {categories.map((category: { strCategory: string }) => (
-          // Enlace a la página de la categoría específica
           <a 
             href={`/category/${category.strCategory.toLowerCase()}`}
             class="flex flex-1 gap-3 rounded-lg border border-[#e7d0d1] bg-[#fcf8f8] p-4 items-center hover:bg-[#f3e7e8] transition-colors group"
           >
-            {/* Contenedor del emoji que representa la categoría */}
-            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg w-10 shrink-0 text-2xl flex items-center justify-center bg-[#f3e7e8]">
-              {/* Asignación condicional de emojis según la categoría */}
-              {category.strCategory === 'Beef' && '🥩'}
-              {category.strCategory === 'Chicken' && '🍗'}
-              {category.strCategory === 'Dessert' && '🍰'}
-              {category.strCategory === 'Lamb' && '🐑'}
-              {category.strCategory === 'Miscellaneous' && '🍽️'}
-              {category.strCategory === 'Pasta' && '🍝'}
-              {category.strCategory === 'Pork' && '🐷'}
-              {category.strCategory === 'Seafood' && '🦐'}
-              {category.strCategory === 'Side' && '🥗'}
-              {category.strCategory === 'Starter' && '🥙'}
-              {category.strCategory === 'Vegan' && '🌱'}
-              {category.strCategory === 'Vegetarian' && '🥬'}
-              {category.strCategory === 'Breakfast' && '🍳'}
-              {category.strCategory === 'Goat' && '🐐'}
-              {/* Emoji por defecto para categorías no listadas */}
-              {!['Beef', 'Chicken', 'Dessert', 'Lamb', 'Miscellaneous', 'Pasta', 'Pork', 'Seafood', 'Side', 'Starter', 'Vegan', 'Vegetarian', 'Breakfast', 'Goat'].includes(category.strCategory) && '🍽️'}
-            </div>
+            {/* Contenedor del ícono de la categoría */}
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg w-10 shrink-0 text-2xl flex items-center justify-center bg-[#f3e7e8]" />
+            
             {/* Nombre de la categoría traducido o en su idioma original */}
             <h2 class="text-[#1b0e0e] text-base font-bold leading-tight group-hover:text-[#994d51] transition-colors">
               {categoryTranslations[category.strCategory] || category.strCategory}

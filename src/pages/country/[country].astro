@@ -34,10 +34,6 @@ try {
       return { ...meal, ...detailData.meals[0] };
     })
   );
-
-  // Obtener categorías únicas de las comidas de este país
-  const uniqueCategories = [...new Set(meals.map(meal => meal.strCategory))].sort();
-  
 } catch (e) {
   error = `Error al cargar recetas: ${e instanceof Error ? e.message : 'Error desconocido'}`;
   console.error('Error fetching meals:', e);
@@ -52,7 +48,6 @@ const countryTranslations: { [key: string]: string } = {
   'British': 'Británica',
   'Canadian': 'Canadiense',
   'Chinese': 'China',
-  'Chilean': 'Chilena',
   'Croatian': 'Croata',
   'Dutch': 'Holandesa',
   'Egyptian': 'Egipcia',
@@ -181,11 +176,3 @@ const countryTranslations: { [key: string]: string } = {
     }
   });
 </script>
-
-<style>
-  select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-</style>

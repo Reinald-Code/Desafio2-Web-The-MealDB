@@ -58,3 +58,10 @@
 .search-dropdown::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+
+/* Reset de apariencia para selects */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
