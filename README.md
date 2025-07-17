@@ -167,9 +167,7 @@ http://localhost:4321
 ## 📖 Documentación Adicional
 
 - [Documentación Completa](./DOCUMENTACION_COMPLETA.md)
-- [Material de Presentación](./MATERIAL_PRESENTACION.md)
 - [Instrucciones de Búsqueda](./INSTRUCCIONES_BUSQUEDA.md)
-- [Arquitectura del Sistema](/architecture)
 
 ## 🔮 Mejoras Futuras
 
@@ -182,7 +180,7 @@ http://localhost:4321
 
 ## � Licencia
 
-Este proyecto es parte de un trabajo académico desarrollado para el curso de Desarrollo Web.
+Este proyecto es parte de un trabajo académico desarrollado para el curso de Desafios de Ingenieria.
 
 ## 🤝 Contribuciones
 
